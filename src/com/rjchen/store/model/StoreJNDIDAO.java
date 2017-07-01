@@ -22,9 +22,9 @@ import com.product.model.ProductVO;
 import com.orderlist.model.OrderlistVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
-import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
+import com.rjchenl.fav_store.model.Fav_storeVO;
 
 public class StoreJNDIDAO implements StoreDAO_interface {
 
@@ -1242,6 +1242,12 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 		else{
 			return null;
 		}
+	}
+
+	@Override
+	public byte[] getImage(String store_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

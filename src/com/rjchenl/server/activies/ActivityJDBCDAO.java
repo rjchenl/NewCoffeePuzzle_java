@@ -404,7 +404,7 @@ public class ActivityJDBCDAO implements ActivityDAO_interface{
 
 	@Override
 	public byte[] getImage(String activ_id) {
-		System.out.println("getImage activ_id : "+activ_id);
+		
 		String sql = "SELECT activ_img FROM activity WHERE activ_id = ?";
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -415,7 +415,7 @@ public class ActivityJDBCDAO implements ActivityDAO_interface{
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, activ_id);
 			ResultSet rs = ps.executeQuery();
-
+		
 
 			if (rs.next()) {
 				image = rs.getBytes(1);

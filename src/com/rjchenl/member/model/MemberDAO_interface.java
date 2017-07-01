@@ -1,4 +1,4 @@
-package com.member.model;
+package com.rjchenl.member.model;
 
 import java.util.List;
 import java.util.Set;
@@ -11,9 +11,9 @@ import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
 import com.participant.model.ParticipantVO;
 import com.rept_activ.model.Rept_activVO;
-import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
+import com.rjchenl.fav_store.model.Fav_storeVO;
 
 public interface MemberDAO_interface {
 

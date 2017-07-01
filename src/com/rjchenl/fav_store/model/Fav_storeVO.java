@@ -1,4 +1,4 @@
-package com.fav_store.model;
+package com.rjchenl.fav_store.model;
 
 import java.io.Serializable;
 
@@ -6,6 +6,8 @@ public class Fav_storeVO implements Serializable {
 
 	private String mem_id;
 	private String store_id;
+	
+
 
 	public Fav_storeVO(){}
 

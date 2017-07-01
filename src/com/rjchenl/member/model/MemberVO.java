@@ -1,4 +1,4 @@
-package com.member.model;
+package com.rjchenl.member.model;
 
 import java.io.Serializable;
 

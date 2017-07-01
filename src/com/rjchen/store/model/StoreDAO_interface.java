@@ -11,9 +11,9 @@ import com.product.model.ProductVO;
 import com.orderlist.model.OrderlistVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
-import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
+import com.rjchenl.fav_store.model.Fav_storeVO;
 
 public interface StoreDAO_interface {
 
@@ -34,5 +34,5 @@ public interface StoreDAO_interface {
 	public Set<Fav_storeVO> getFav_storesByStore_id(String store_id);
 	public Set<Photo_storeVO> getPhoto_storesByStore_id(String store_id);
 	public Set<Rept_storeVO> getRept_storesByStore_id(String store_id);
-
+	public byte[] getImage(String store_id);
 }

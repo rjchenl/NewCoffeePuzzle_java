@@ -1,4 +1,4 @@
-package com.fav_store.model;
+package com.rjchenl.fav_store.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,6 +203,18 @@ public class Fav_storeJNDIDAO implements Fav_storeDAO_interface {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public List<Fav_storeVO> getCombinationString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public byte[] getImage(String store_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
