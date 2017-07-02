@@ -1,4 +1,4 @@
-package com.spndcoffeelist.model;
+package com.rjchenl.spndcoffeelist.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

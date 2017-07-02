@@ -2,7 +2,8 @@ package com.spndcoffee.model;
 
 import java.util.List;
 import java.util.Set;
-import com.spndcoffeelist.model.SpndcoffeelistVO;
+
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public interface SpndcoffeeDAO_interface {
 

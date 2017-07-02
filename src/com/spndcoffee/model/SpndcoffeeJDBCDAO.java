@@ -9,7 +9,8 @@ import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.spndcoffeelist.model.SpndcoffeelistVO;
+
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public class SpndcoffeeJDBCDAO implements SpndcoffeeDAO_interface {
 

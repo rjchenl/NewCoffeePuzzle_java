@@ -3,7 +3,6 @@ package com.rjchen.store.model;
 import java.util.List;
 import java.util.Set;
 import com.spndcoffee.model.SpndcoffeeVO;
-import com.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.news.model.NewsVO;
 import com.store_tag.model.Store_tagVO;
@@ -14,6 +13,7 @@ import com.activity.model.ActivityVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
 import com.rjchenl.fav_store.model.Fav_storeVO;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public interface StoreDAO_interface {
 

@@ -1,4 +1,4 @@
-package com.spndcoffeelist.model;
+package com.rjchenl.spndcoffeelist.model;
 
 import java.util.List;
 import java.util.Set;

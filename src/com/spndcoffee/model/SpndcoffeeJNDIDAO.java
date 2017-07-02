@@ -8,9 +8,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.spndcoffeelist.model.SpndcoffeelistVO;
 
 public class SpndcoffeeJNDIDAO implements SpndcoffeeDAO_interface {
 

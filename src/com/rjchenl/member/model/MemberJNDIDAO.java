@@ -13,7 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.spndcoffeelist.model.SpndcoffeelistVO;
+
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.report.model.ReportVO;
 import com.orderlist.model.OrderlistVO;
@@ -25,6 +25,7 @@ import com.rept_activ.model.Rept_activVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
 import com.rjchenl.fav_store.model.Fav_storeVO;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public class MemberJNDIDAO implements MemberDAO_interface {
 
