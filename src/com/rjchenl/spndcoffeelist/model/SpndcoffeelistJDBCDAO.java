@@ -22,7 +22,9 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	private static final String DELETE_SPNDCOFFEERCDs = "DELETE FROM SPNDCOFFEERCD WHERE LIST_ID = ?";
 	private static final String DELETE_SPNDCOFFEELIST = "DELETE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
 	private static final String UPDATE = "UPDATE SPNDCOFFEELIST SET SPND_ID=?, MEM_ID=?, SPND_PROD=?, STORE_ID=?, LIST_AMT=?, LIST_LEFT=?, LIST_DATE=? WHERE LIST_ID = ?";
-
+	private static final String GETMYSPNDCOFFEELIST ="SELECT P.LIST_LEFT,S.STORE_NAME,S.STORE_ADD FROM SPNDCOFFEELIST P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.MEM_ID = ?";
+	
+	
 	@Override
 	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
 
@@ -298,6 +300,8 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 		}
 		return list;
 	}
+	
+	
 
 	@Override
 	public Set<SpndcoffeercdVO> getSpndcoffeercdsByList_id(String list_id){
@@ -425,6 +429,65 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 		}
 
 */
+	}
+
+	@Override
+	public List<SpndcoffeelistVO> getMySpndCoffeeList(String mem_id) {
+		List<SpndcoffeelistVO> list = new ArrayList<SpndcoffeelistVO>();
+		SpndcoffeelistVO spndcoffeelistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GETMYSPNDCOFFEELIST);
+			
+			pstmt.setString(1, mem_id);
+			
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				spndcoffeelistVO = new SpndcoffeelistVO();
+				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
+				spndcoffeelistVO.setStore_name(rs.getString("store_name"));
+				spndcoffeelistVO.setStore_add(rs.getString("store_add"));
+				list.add(spndcoffeelistVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 

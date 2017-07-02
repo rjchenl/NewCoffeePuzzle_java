@@ -343,5 +343,61 @@ public class SpndcoffeelistJNDIDAO implements SpndcoffeelistDAO_interface {
 		return set;
 	}
 
+	@Override
+	public List<SpndcoffeelistVO> getMySpndCoffeeList(String mem_id) {
+		List<SpndcoffeelistVO> list = new ArrayList<SpndcoffeelistVO>();
+		SpndcoffeelistVO spndcoffeelistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			
+			
+		
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				spndcoffeelistVO = new SpndcoffeelistVO();
+				spndcoffeelistVO.setList_left(rs.getInt("list_left"));			
+				spndcoffeelistVO.setStore_name(rs.getString("store_name"));
+				spndcoffeelistVO.setStore_add(rs.getString("store_add"));
+				
+				list.add(spndcoffeelistVO); // Store the row in the list
+			}
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
 
 }

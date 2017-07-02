@@ -12,5 +12,6 @@ public interface SpndcoffeelistDAO_interface {
 	public SpndcoffeelistVO findByPrimaryKey(String list_id);
 	public List<SpndcoffeelistVO> getAll();
 	public Set<SpndcoffeercdVO> getSpndcoffeercdsByList_id(String list_id);
+	public List<SpndcoffeelistVO> getMySpndCoffeeList(String mem_id);
 
 }

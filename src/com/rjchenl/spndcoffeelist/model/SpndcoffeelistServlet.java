@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.rjchenl.fav_store.model.Fav_storeVO;
 import com.rjchenl.server.activies.ActivityDAO_interface;
 import com.rjchenl.server.activies.ActivityJDBCDAO;
 import com.rjchenl.server.activies.ActivityVO;
@@ -52,6 +53,10 @@ public class SpndcoffeelistServlet extends HttpServlet{
 		SpndcoffeelistDAO_interface spndDAO = new SpndcoffeelistJDBCDAO();
 		
 		String action = jsonObject.get("action").getAsString();
+		
+		
+		
+		
 
 		if (action.equals("getAll")) {
 			
@@ -59,7 +64,21 @@ public class SpndcoffeelistServlet extends HttpServlet{
 			writeText(response, gson.toJson(spndList));
 		
 		
+		}else if(action.equals("getMySpndCoffeeList")){
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			
+			List<SpndcoffeelistVO> spndList = spndDAO.getMySpndCoffeeList(mem_id);
+			
+			writeText(response, gson.toJson(spndList));
 		}
+		
+		
+		
+		
+		
+		
+		
 //		else if(action.equals("getImage")){
 //			
 //		
