@@ -31,7 +31,7 @@ public class ProductJNDIDAO implements ProductDAO_interface {
 	private static final String INSERT_STMT = "INSERT INTO PRODUCT (PROD_ID,STORE_ID,PROD_NAME,CATE_ID,PROD_PRICE,PROD_CATEGORY,PROD_IMG,PROD_AMT,PROD_LAUNCH) VALUES ('PROD' || LPAD(to_char(PROD_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT PROD_ID,STORE_ID,PROD_NAME,CATE_ID,PROD_PRICE,PROD_CATEGORY,PROD_IMG,PROD_AMT,PROD_LAUNCH FROM PRODUCT ORDER BY PROD_ID";
 	private static final String GET_ONE_STMT = "SELECT PROD_ID,STORE_ID,PROD_NAME,CATE_ID,PROD_PRICE,PROD_CATEGORY,PROD_IMG,PROD_AMT,PROD_LAUNCH FROM PRODUCT WHERE PROD_ID = ?";
-	private static final String GET_Orderdetails_ByProd_id_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT,DETAIL_RETURN FROM ORDERDETAIL WHERE PROD_ID = ? ORDER BY ORD_ID,PROD_ID";
+	private static final String GET_Orderdetails_ByProd_id_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL WHERE PROD_ID = ? ORDER BY ORD_ID,PROD_ID";
 	private static final String GET_Msgs_ByProd_id_STMT = "SELECT MSG_ID,MEM_ID,PROD_ID,MSG_CONTENT,MSG_DATE FROM MSG WHERE PROD_ID = ? ORDER BY MSG_ID";
 
 	private static final String DELETE_ORDERDETAILs = "DELETE FROM ORDERDETAIL WHERE PROD_ID = ?";
@@ -327,7 +327,6 @@ public class ProductJNDIDAO implements ProductDAO_interface {
 				orderdetailVO.setProd_name(rs.getString("prod_name"));
 				orderdetailVO.setProd_price(rs.getInt("prod_price"));
 				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
-				orderdetailVO.setDetail_return(rs.getInt("detail_return"));
 				set.add(orderdetailVO); // Store the row in the vector
 			}
 

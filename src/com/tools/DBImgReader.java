@@ -52,6 +52,9 @@ public class DBImgReader extends HttpServlet {
 					case "member":
 						sql = "SELECT mem_img FROM member WHERE mem_id = '" + pk + "'";
 						break;
+					case "store":
+						sql = "SELECT store_img FROM store WHERE store_id = '" + pk + "'";
+						break;
 					case "spndcoffee":
 						sql = "SELECT spnd_img FROM spndcoffee WHERE spnd_id = '" + pk + "'";
 						break;

@@ -978,16 +978,16 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 				orderlistVO.setOrd_add(rs.getString("ord_add"));
 				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
 				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-				orderlistVO.setScore_buyer(rs.getInt("score_buyer"));
+//				orderlistVO.setScore_buyer(rs.getInt("score_buyer"));
 				orderlistVO.setScore_seller(rs.getInt("score_seller"));
-				orderlistVO.setRept_buyer(rs.getInt("rept_buyer"));
-				orderlistVO.setRept_buyer_rsn(readerToString(rs.getCharacterStream("rept_buyer_rsn")));
-				orderlistVO.setRept_buyer_rev(rs.getInt("rept_buyer_rev"));
-				orderlistVO.setRept_seller(rs.getInt("rept_seller"));
-				orderlistVO.setRept_seller_rsn(readerToString(rs.getCharacterStream("rept_seller_rsn")));
-				orderlistVO.setRept_seller_rev(rs.getInt("rept_seller_rev"));
-				orderlistVO.setOrd_isreturn(rs.getInt("ord_isreturn"));
-				orderlistVO.setReturn_rsn(readerToString(rs.getCharacterStream("return_rsn")));
+//				orderlistVO.setRept_buyer(rs.getInt("rept_buyer"));
+//				orderlistVO.setRept_buyer_rsn(readerToString(rs.getCharacterStream("rept_buyer_rsn")));
+//				orderlistVO.setRept_buyer_rev(rs.getInt("rept_buyer_rev"));
+//				orderlistVO.setRept_seller(rs.getInt("rept_seller"));
+//				orderlistVO.setRept_seller_rsn(readerToString(rs.getCharacterStream("rept_seller_rsn")));
+//				orderlistVO.setRept_seller_rev(rs.getInt("rept_seller_rev"));
+//				orderlistVO.setOrd_isreturn(rs.getInt("ord_isreturn"));
+//				orderlistVO.setReturn_rsn(readerToString(rs.getCharacterStream("return_rsn")));
 				set.add(orderlistVO); // Store the row in the vector
 			}
 

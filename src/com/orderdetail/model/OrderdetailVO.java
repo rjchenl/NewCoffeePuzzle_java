@@ -9,17 +9,15 @@ public class OrderdetailVO implements Serializable {
 	private String prod_name;
 	private Integer prod_price;
 	private Integer detail_amt;
-	private Integer detail_return;
 
 	public OrderdetailVO(){}
 
-	public OrderdetailVO(String ord_id, String prod_id, String prod_name, Integer prod_price, Integer detail_amt, Integer detail_return){
+	public OrderdetailVO(String ord_id, String prod_id, String prod_name, Integer prod_price, Integer detail_amt){
 		this.ord_id = ord_id;
 		this.prod_id = prod_id;
 		this.prod_name = prod_name;
 		this.prod_price = prod_price;
 		this.detail_amt = detail_amt;
-		this.detail_return = detail_return;
 	}
 
 	public String getOrd_id() {
@@ -60,14 +58,6 @@ public class OrderdetailVO implements Serializable {
 
 	public void setDetail_amt(Integer detail_amt) {
 		this.detail_amt = detail_amt;
-	}
-
-	public Integer getDetail_return() {
-		return detail_return;
-	}
-
-	public void setDetail_return(Integer detail_return) {
-		this.detail_return = detail_return;
 	}
 
 }

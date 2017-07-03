@@ -1,4 +1,4 @@
-package com.orderdetail.model;
+package com.fav_store.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
+public class Fav_storeJNDIDAO implements Fav_storeDAO_interface {
 
 	private static DataSource ds = null;
 	static {
@@ -21,14 +21,13 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO ORDERDETAIL (ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT) VALUES (?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL ORDER BY ORD_ID,PROD_ID";
-	private static final String GET_ONE_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
-	private static final String DELETE_ORDERDETAIL = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
-	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=? WHERE ORD_ID = ? AND PROD_ID = ?";
+	private static final String INSERT_STMT = "INSERT INTO FAV_STORE (MEM_ID,STORE_ID) VALUES (?, ?)";
+	private static final String GET_ALL_STMT = "SELECT MEM_ID,STORE_ID FROM FAV_STORE ORDER BY MEM_ID,STORE_ID";
+	private static final String GET_ONE_STMT = "SELECT MEM_ID,STORE_ID FROM FAV_STORE WHERE MEM_ID = ? AND STORE_ID = ?";
+	private static final String DELETE_FAV_STORE = "DELETE FROM FAV_STORE WHERE MEM_ID = ? AND STORE_ID = ?";
 
 	@Override
-	public void insert(OrderdetailVO orderdetailVO) {
+	public void insert(Fav_storeVO fav_storeVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -37,11 +36,8 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, orderdetailVO.getOrd_id());
-			pstmt.setString(2, orderdetailVO.getProd_id());
-			pstmt.setString(3, orderdetailVO.getProd_name());
-			pstmt.setInt(4, orderdetailVO.getProd_price());
-			pstmt.setInt(5, orderdetailVO.getDetail_amt());
+			pstmt.setString(1, fav_storeVO.getMem_id());
+			pstmt.setString(2, fav_storeVO.getStore_id());
 
 			pstmt.executeUpdate();
 
@@ -68,20 +64,17 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public void update(OrderdetailVO orderdetailVO) {
+	public void delete(String mem_id, String store_id) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
+			pstmt = con.prepareStatement(DELETE_FAV_STORE);
 
-			pstmt.setString(1, orderdetailVO.getProd_name());
-			pstmt.setInt(2, orderdetailVO.getProd_price());
-			pstmt.setInt(3, orderdetailVO.getDetail_amt());
-			pstmt.setString(4, orderdetailVO.getOrd_id());
-			pstmt.setString(5, orderdetailVO.getProd_id());
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, store_id);
 
 			pstmt.executeUpdate();
 
@@ -108,46 +101,9 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public void delete(String ord_id, String prod_id) {
+	public Fav_storeVO findByPrimaryKey(String mem_id, String store_id) {
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(DELETE_ORDERDETAIL);
-
-			pstmt.setString(1, ord_id);
-			pstmt.setString(2, prod_id);
-
-			pstmt.executeUpdate();
-
-			// Handle any SQL errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-	}
-
-	@Override
-	public OrderdetailVO findByPrimaryKey(String ord_id, String prod_id) {
-
-		OrderdetailVO orderdetailVO = null;
+		Fav_storeVO fav_storeVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -156,18 +112,15 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setString(1, ord_id);
-			pstmt.setString(2, prod_id);
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, store_id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				orderdetailVO = new OrderdetailVO();
-				orderdetailVO.setOrd_id(rs.getString("ord_id"));
-				orderdetailVO.setProd_id(rs.getString("prod_id"));
-				orderdetailVO.setProd_name(rs.getString("prod_name"));
-				orderdetailVO.setProd_price(rs.getInt("prod_price"));
-				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
+				fav_storeVO = new Fav_storeVO();
+				fav_storeVO.setMem_id(rs.getString("mem_id"));
+				fav_storeVO.setStore_id(rs.getString("store_id"));
 			}
 
 			// Handle any SQL errors
@@ -197,14 +150,14 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 				}
 			}
 		}
-		return orderdetailVO;
+		return fav_storeVO;
 	}
 
 	@Override
-	public List<OrderdetailVO> getAll() {
+	public List<Fav_storeVO> getAll() {
 
-		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
-		OrderdetailVO orderdetailVO = null;
+		List<Fav_storeVO> list = new ArrayList<Fav_storeVO>();
+		Fav_storeVO fav_storeVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -216,13 +169,10 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				orderdetailVO = new OrderdetailVO();
-				orderdetailVO.setOrd_id(rs.getString("ord_id"));
-				orderdetailVO.setProd_id(rs.getString("prod_id"));
-				orderdetailVO.setProd_name(rs.getString("prod_name"));
-				orderdetailVO.setProd_price(rs.getInt("prod_price"));
-				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
-				list.add(orderdetailVO); // Store the row in the list
+				fav_storeVO = new Fav_storeVO();
+				fav_storeVO.setMem_id(rs.getString("mem_id"));
+				fav_storeVO.setStore_id(rs.getString("store_id"));
+				list.add(fav_storeVO); // Store the row in the list
 			}
 
 			// Handle any SQL errors

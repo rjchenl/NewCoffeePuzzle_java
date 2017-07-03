@@ -1,4 +1,4 @@
-package com.rjchenl.member.model;
+package com.member.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+import com.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.report.model.ReportVO;
 import com.orderlist.model.OrderlistVO;
@@ -20,10 +20,9 @@ import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
 import com.participant.model.ParticipantVO;
 import com.rept_activ.model.Rept_activVO;
+import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
-import com.rjchenl.fav_store.model.Fav_storeVO;
-import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public class MemberJDBCDAO implements MemberDAO_interface {
 
@@ -32,13 +31,13 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	String userid = "ba101g4";
 	String passwd = "ba101g4";
 
-	private static final String INSERT_STMT = "INSERT INTO MEMBER (MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG) VALUES ('MEM' || LPAD(to_char(MEM_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG FROM MEMBER ORDER BY MEM_ID";
-	private static final String GET_ONE_STMT = "SELECT MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG FROM MEMBER WHERE MEM_ID = ?";
+	private static final String INSERT_STMT = "INSERT INTO MEMBER (MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG,MEM_AUTHENTICATION,MEM_VALIDATECODE) VALUES ('MEM' || LPAD(to_char(MEM_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG,MEM_AUTHENTICATION,MEM_VALIDATECODE FROM MEMBER ORDER BY MEM_ID";
+	private static final String GET_ONE_STMT = "SELECT MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG,MEM_AUTHENTICATION,MEM_VALIDATECODE FROM MEMBER WHERE MEM_ID = ?";
 	private static final String GET_Spndcoffeelists_ByMem_id_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST WHERE MEM_ID = ? ORDER BY LIST_ID";
 	private static final String GET_Rate_n_revs_ByMem_id_STMT = "SELECT RNR_ID,MEM_ID,STORE_ID,RNR_RATE,RNR_REV,RNR_DATE FROM RATE_N_REV WHERE MEM_ID = ? ORDER BY RNR_ID";
 	private static final String GET_Reports_ByMem_id_STMT = "SELECT MEM_ID,RNR_ID,REPT_VERF,REPT_RSN FROM REPORT WHERE MEM_ID = ? ORDER BY MEM_ID,RNR_ID";
-	private static final String GET_Orderlists_ByMem_id_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_BUYER,SCORE_SELLER,REPT_BUYER,REPT_BUYER_RSN,REPT_BUYER_REV,REPT_SELLER,REPT_SELLER_RSN,REPT_SELLER_REV,ORD_ISRETURN,RETURN_RSN FROM ORDERLIST WHERE MEM_ID = ? ORDER BY ORD_ID";
+	private static final String GET_Orderlists_ByMem_id_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE MEM_ID = ? ORDER BY ORD_ID";
 	private static final String GET_Msgs_ByMem_id_STMT = "SELECT MSG_ID,MEM_ID,PROD_ID,MSG_CONTENT,MSG_DATE FROM MSG WHERE MEM_ID = ? ORDER BY MSG_ID";
 	private static final String GET_Replys_ByMem_id_STMT = "SELECT REPLY_ID,MSG_ID,MEM_ID,STORE_ID,REPLY_CONTENT,REPLY_DATE FROM REPLY WHERE MEM_ID = ? ORDER BY REPLY_ID";
 	private static final String GET_Activitys_ByMem_id_STMT = "SELECT ACTIV_ID,MEM_ID,STORE_ID,ACTIV_NAME,ACTIV_STARTTIME,ACTIV_ENDTIME,ACTIV_EXPIRE,ACTIV_IMG,ACTIV_SUMMARY,ACTIV_INTRO,ACTIV_NUM,ACTIV_STORE_CFM FROM ACTIVITY WHERE MEM_ID = ? ORDER BY ACTIV_ID";
@@ -61,7 +60,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	private static final String DELETE_PHOTO_STOREs = "DELETE FROM PHOTO_STORE WHERE MEM_ID = ?";
 	private static final String DELETE_REPT_STOREs = "DELETE FROM REPT_STORE WHERE MEM_ID = ?";
 	private static final String DELETE_MEMBER = "DELETE FROM MEMBER WHERE MEM_ID = ?";
-	private static final String UPDATE = "UPDATE MEMBER SET MEM_ACCT=?, MEM_PWD=?, MEM_NAME=?, MEM_TEL=?, MEM_EMAIL=?, MEM_ADD=?, MEM_POINTS=?, MEM_IMG=? WHERE MEM_ID = ?";
+	private static final String UPDATE = "UPDATE MEMBER SET MEM_ACCT=?, MEM_PWD=?, MEM_NAME=?, MEM_TEL=?, MEM_EMAIL=?, MEM_ADD=?, MEM_POINTS=?, MEM_IMG=?, MEM_AUTHENTICATION=?, MEM_VALIDATECODE=? WHERE MEM_ID = ?";
 
 	@Override
 	public void insert(MemberVO memberVO) {
@@ -82,6 +81,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			pstmt.setString(6, memberVO.getMem_add());
 			pstmt.setInt(7, memberVO.getMem_points());
 			pstmt.setBytes(8, memberVO.getMem_img());
+			pstmt.setInt(9, memberVO.getMem_authentication());
+			pstmt.setString(10, memberVO.getMem_validatecode());
 
 			pstmt.executeUpdate();
 
@@ -129,7 +130,9 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			pstmt.setString(6, memberVO.getMem_add());
 			pstmt.setInt(7, memberVO.getMem_points());
 			pstmt.setBytes(8, memberVO.getMem_img());
-			pstmt.setString(9, memberVO.getMem_id());
+			pstmt.setInt(9, memberVO.getMem_authentication());
+			pstmt.setString(10, memberVO.getMem_validatecode());
+			pstmt.setString(11, memberVO.getMem_id());
 
 			pstmt.executeUpdate();
 
@@ -311,6 +314,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				memberVO.setMem_add(rs.getString("mem_add"));
 				memberVO.setMem_points(rs.getInt("mem_points"));
 				memberVO.setMem_img(rs.getBytes("mem_img"));
+				memberVO.setMem_authentication(rs.getInt("mem_authentication"));
+				memberVO.setMem_validatecode(rs.getString("mem_validatecode"));
 			}
 
 			// Handle any driver errors
@@ -348,7 +353,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 
 	@Override
 	public List<MemberVO> getAll() {
-		System.out.println("enter getall");
 
 		List<MemberVO> list = new ArrayList<MemberVO>();
 		MemberVO memberVO = null;
@@ -357,17 +361,14 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			System.out.println("step1");
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ALL_STMT);
-			System.out.println("step2");
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("step3");
-				memberVO = new MemberVO(); 
+				memberVO = new MemberVO();
 				memberVO.setMem_id(rs.getString("mem_id"));
 				memberVO.setMem_acct(rs.getString("mem_acct"));
 				memberVO.setMem_pwd(rs.getString("mem_pwd"));
@@ -377,6 +378,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				memberVO.setMem_add(rs.getString("mem_add"));
 				memberVO.setMem_points(rs.getInt("mem_points"));
 				memberVO.setMem_img(rs.getBytes("mem_img"));
+				memberVO.setMem_authentication(rs.getInt("mem_authentication"));
+				memberVO.setMem_validatecode(rs.getString("mem_validatecode"));
 				list.add(memberVO); // Store the row in the list
 			}
 
@@ -619,16 +622,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				orderlistVO.setOrd_add(rs.getString("ord_add"));
 				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
 				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-//				orderlistVO.setScore_buyer(rs.getInt("score_buyer"));
-//				orderlistVO.setScore_seller(rs.getInt("score_seller"));
-//				orderlistVO.setRept_buyer(rs.getInt("rept_buyer"));
-//				orderlistVO.setRept_buyer_rsn(readerToString(rs.getCharacterStream("rept_buyer_rsn")));
-//				orderlistVO.setRept_buyer_rev(rs.getInt("rept_buyer_rev"));
-//				orderlistVO.setRept_seller(rs.getInt("rept_seller"));
-//				orderlistVO.setRept_seller_rsn(readerToString(rs.getCharacterStream("rept_seller_rsn")));
-//				orderlistVO.setRept_seller_rev(rs.getInt("rept_seller_rev"));
-//				orderlistVO.setOrd_isreturn(rs.getInt("ord_isreturn"));
-//				orderlistVO.setReturn_rsn(readerToString(rs.getCharacterStream("return_rsn")));
+				orderlistVO.setScore_seller(rs.getInt("score_seller"));
 				set.add(orderlistVO); // Store the row in the vector
 			}
 
@@ -1196,6 +1190,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		memberVO.setMem_add("A");
 		memberVO.setMem_points(1);
 		memberVO.setMem_img(getPictureByteArray("D:/temp/tomcat.gif"));
+		memberVO.setMem_authentication(1);
+		memberVO.setMem_validatecode("A");
 		dao.insert(memberVO);
 
 		// update()
@@ -1209,6 +1205,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		memberVO.setMem_add("A");
 		memberVO.setMem_points(1);
 		memberVO.setMem_img(getPictureByteArray("D:/temp/tomcat.gif"));
+		memberVO.setMem_authentication(1);
+		memberVO.setMem_validatecode("A");
 		dao.update(memberVO);
 
 		// delete()
@@ -1225,6 +1223,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		System.out.print(memberVO.getMem_add() + ", ");
 		System.out.print(memberVO.getMem_points() + ", ");
 		System.out.print(memberVO.getMem_img() + ", ");
+		System.out.print(memberVO.getMem_authentication() + ", ");
+		System.out.print(memberVO.getMem_validatecode() + ", ");
 		System.out.println("---------------------");
 
 		// getAll()
@@ -1239,6 +1239,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aMemberVO.getMem_add() + ", ");
 			System.out.print(aMemberVO.getMem_points() + ", ");
 			System.out.print(aMemberVO.getMem_img() + ", ");
+			System.out.print(aMemberVO.getMem_authentication() + ", ");
+			System.out.print(aMemberVO.getMem_validatecode() + ", ");
 			System.out.println();
 		}
 
@@ -1285,16 +1287,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aOrderlist.getOrd_add() + ", ");
 			System.out.print(aOrderlist.getOrd_shipping() + ", ");
 			System.out.print(aOrderlist.getOrd_time() + ", ");
-			System.out.print(aOrderlist.getScore_buyer() + ", ");
 			System.out.print(aOrderlist.getScore_seller() + ", ");
-			System.out.print(aOrderlist.getRept_buyer() + ", ");
-			System.out.print(aOrderlist.getRept_buyer_rsn() + ", ");
-			System.out.print(aOrderlist.getRept_buyer_rev() + ", ");
-			System.out.print(aOrderlist.getRept_seller() + ", ");
-			System.out.print(aOrderlist.getRept_seller_rsn() + ", ");
-			System.out.print(aOrderlist.getRept_seller_rev() + ", ");
-			System.out.print(aOrderlist.getOrd_isreturn() + ", ");
-			System.out.print(aOrderlist.getReturn_rsn() + ", ");
 			System.out.println();
 		}
 

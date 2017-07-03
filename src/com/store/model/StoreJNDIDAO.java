@@ -1,4 +1,4 @@
-package com.rjchen.store.model;
+package com.store.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+import com.spndcoffee.model.SpndcoffeeVO;
+import com.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.news.model.NewsVO;
 import com.store_tag.model.Store_tagVO;
@@ -21,11 +22,9 @@ import com.product.model.ProductVO;
 import com.orderlist.model.OrderlistVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
+import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
-import com.rjchenl.fav_store.model.Fav_storeVO;
-import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
-import com.rjchnel.spndcoffee.model.SpndcoffeeVO;
 
 public class StoreJNDIDAO implements StoreDAO_interface {
 
@@ -39,16 +38,16 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO STORE (STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS) VALUES ('STORE' || LPAD(to_char(STORE_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS FROM STORE ORDER BY STORE_ID";
-	private static final String GET_ONE_STMT = "SELECT STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS FROM STORE WHERE STORE_ID = ?";
+	private static final String INSERT_STMT = "INSERT INTO STORE (STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS,STORE_AUTHENTICATION,STORE_VALIDATECODE) VALUES ('STORE' || LPAD(to_char(STORE_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS,STORE_AUTHENTICATION,STORE_VALIDATECODE FROM STORE ORDER BY STORE_ID";
+	private static final String GET_ONE_STMT = "SELECT STORE_ID,STORE_ACCT,STORE_PWD,STORE_NAME,STORE_TEL,STORE_ADD,STORE_EMAIL,LONGITUDE,LATITUDE,STORE_POINTS,STORE_CPSE,MIN_ORDER,IS_MIN_ORDER,IS_WIFI,IS_PLUG,IS_SINGLE_ORGN,IS_DESSERT,IS_MEAL,IS_TIME_LIMIT,MON_ISOPEN,MON_OPEN,MON_CLOSE,TUE_ISOPEN,TUE_OPEN,TUE_CLOSE,WED_ISOPEN,WED_OPEN,WED_CLOSE,THU_ISOPEN,THU_OPEN,THU_CLOSE,FRI_ISOPEN,FRI_OPEN,FRI_CLOSE,SAT_ISOPEN,SAT_OPEN,SAT_CLOSE,SUN_ISOPEN,SUN_OPEN,SUN_CLOSE,STORE_IMG,STORE_PASS,STORE_AUTHENTICATION,STORE_VALIDATECODE FROM STORE WHERE STORE_ID = ?";
 	private static final String GET_Spndcoffees_ByStore_id_STMT = "SELECT SPND_ID,STORE_ID,SPND_NAME,SPND_PROD,to_char(SPND_ENDDATE,'yyyy-mm-dd') SPND_ENDDATE,SPND_AMT,SPND_IMG FROM SPNDCOFFEE WHERE STORE_ID = ? ORDER BY SPND_ID";
 	private static final String GET_Spndcoffeelists_ByStore_id_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST WHERE STORE_ID = ? ORDER BY LIST_ID";
 	private static final String GET_Rate_n_revs_ByStore_id_STMT = "SELECT RNR_ID,MEM_ID,STORE_ID,RNR_RATE,RNR_REV,RNR_DATE FROM RATE_N_REV WHERE STORE_ID = ? ORDER BY RNR_ID";
 	private static final String GET_Newss_ByStore_id_STMT = "SELECT NEWS_ID,STORE_ID,NEWS_TITLE,NEWS_CONTENT,NEWS_IMG,NEWS_DATE,NEWS_CLASS,NEWS_TOP,NEWS_PASS FROM NEWS WHERE STORE_ID = ? ORDER BY NEWS_ID";
 	private static final String GET_Store_tags_ByStore_id_STMT = "SELECT STORE_ID,TAG_ID,TAG_NUM FROM STORE_TAG WHERE STORE_ID = ? ORDER BY STORE_ID,TAG_ID";
 	private static final String GET_Products_ByStore_id_STMT = "SELECT PROD_ID,STORE_ID,PROD_NAME,CATE_ID,PROD_PRICE,PROD_CATEGORY,PROD_IMG,PROD_AMT,PROD_LAUNCH FROM PRODUCT WHERE STORE_ID = ? ORDER BY PROD_ID";
-	private static final String GET_Orderlists_ByStore_id_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_BUYER,SCORE_SELLER,REPT_BUYER,REPT_BUYER_RSN,REPT_BUYER_REV,REPT_SELLER,REPT_SELLER_RSN,REPT_SELLER_REV,ORD_ISRETURN,RETURN_RSN FROM ORDERLIST WHERE STORE_ID = ? ORDER BY ORD_ID";
+	private static final String GET_Orderlists_ByStore_id_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ? ORDER BY ORD_ID";
 	private static final String GET_Replys_ByStore_id_STMT = "SELECT REPLY_ID,MSG_ID,MEM_ID,STORE_ID,REPLY_CONTENT,REPLY_DATE FROM REPLY WHERE STORE_ID = ? ORDER BY REPLY_ID";
 	private static final String GET_Activitys_ByStore_id_STMT = "SELECT ACTIV_ID,MEM_ID,STORE_ID,ACTIV_NAME,ACTIV_STARTTIME,ACTIV_ENDTIME,ACTIV_EXPIRE,ACTIV_IMG,ACTIV_SUMMARY,ACTIV_INTRO,ACTIV_NUM,ACTIV_STORE_CFM FROM ACTIVITY WHERE STORE_ID = ? ORDER BY ACTIV_ID";
 	private static final String GET_Fav_stores_ByStore_id_STMT = "SELECT MEM_ID,STORE_ID FROM FAV_STORE WHERE STORE_ID = ? ORDER BY MEM_ID,STORE_ID";
@@ -68,7 +67,7 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 	private static final String DELETE_PHOTO_STOREs = "DELETE FROM PHOTO_STORE WHERE STORE_ID = ?";
 	private static final String DELETE_REPT_STOREs = "DELETE FROM REPT_STORE WHERE STORE_ID = ?";
 	private static final String DELETE_STORE = "DELETE FROM STORE WHERE STORE_ID = ?";
-	private static final String UPDATE = "UPDATE STORE SET STORE_ACCT=?, STORE_PWD=?, STORE_NAME=?, STORE_TEL=?, STORE_ADD=?, STORE_EMAIL=?, LONGITUDE=?, LATITUDE=?, STORE_POINTS=?, STORE_CPSE=?, MIN_ORDER=?, IS_MIN_ORDER=?, IS_WIFI=?, IS_PLUG=?, IS_SINGLE_ORGN=?, IS_DESSERT=?, IS_MEAL=?, IS_TIME_LIMIT=?, MON_ISOPEN=?, MON_OPEN=?, MON_CLOSE=?, TUE_ISOPEN=?, TUE_OPEN=?, TUE_CLOSE=?, WED_ISOPEN=?, WED_OPEN=?, WED_CLOSE=?, THU_ISOPEN=?, THU_OPEN=?, THU_CLOSE=?, FRI_ISOPEN=?, FRI_OPEN=?, FRI_CLOSE=?, SAT_ISOPEN=?, SAT_OPEN=?, SAT_CLOSE=?, SUN_ISOPEN=?, SUN_OPEN=?, SUN_CLOSE=?, STORE_IMG=?, STORE_PASS=? WHERE STORE_ID = ?";
+	private static final String UPDATE = "UPDATE STORE SET STORE_ACCT=?, STORE_PWD=?, STORE_NAME=?, STORE_TEL=?, STORE_ADD=?, STORE_EMAIL=?, LONGITUDE=?, LATITUDE=?, STORE_POINTS=?, STORE_CPSE=?, MIN_ORDER=?, IS_MIN_ORDER=?, IS_WIFI=?, IS_PLUG=?, IS_SINGLE_ORGN=?, IS_DESSERT=?, IS_MEAL=?, IS_TIME_LIMIT=?, MON_ISOPEN=?, MON_OPEN=?, MON_CLOSE=?, TUE_ISOPEN=?, TUE_OPEN=?, TUE_CLOSE=?, WED_ISOPEN=?, WED_OPEN=?, WED_CLOSE=?, THU_ISOPEN=?, THU_OPEN=?, THU_CLOSE=?, FRI_ISOPEN=?, FRI_OPEN=?, FRI_CLOSE=?, SAT_ISOPEN=?, SAT_OPEN=?, SAT_CLOSE=?, SUN_ISOPEN=?, SUN_OPEN=?, SUN_CLOSE=?, STORE_IMG=?, STORE_PASS=?, STORE_AUTHENTICATION=?, STORE_VALIDATECODE=? WHERE STORE_ID = ?";
 
 	@Override
 	public void insert(StoreVO storeVO) {
@@ -121,6 +120,8 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 			pstmt.setTimestamp(39, storeVO.getSun_close());
 			pstmt.setBytes(40, storeVO.getStore_img());
 			pstmt.setInt(41, storeVO.getStore_pass());
+			pstmt.setInt(42, storeVO.getStore_authentication());
+			pstmt.setString(43, storeVO.getStore_validatecode());
 
 			pstmt.executeUpdate();
 
@@ -197,7 +198,9 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 			pstmt.setTimestamp(39, storeVO.getSun_close());
 			pstmt.setBytes(40, storeVO.getStore_img());
 			pstmt.setInt(41, storeVO.getStore_pass());
-			pstmt.setString(42, storeVO.getStore_id());
+			pstmt.setInt(42, storeVO.getStore_authentication());
+			pstmt.setString(43, storeVO.getStore_validatecode());
+			pstmt.setString(44, storeVO.getStore_id());
 
 			pstmt.executeUpdate();
 
@@ -404,6 +407,8 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 				storeVO.setSun_close(rs.getTimestamp("sun_close"));
 				storeVO.setStore_img(rs.getBytes("store_img"));
 				storeVO.setStore_pass(rs.getInt("store_pass"));
+				storeVO.setStore_authentication(rs.getInt("store_authentication"));
+				storeVO.setStore_validatecode(rs.getString("store_validatecode"));
 			}
 
 			// Handle any SQL errors
@@ -495,6 +500,8 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 				storeVO.setSun_close(rs.getTimestamp("sun_close"));
 				storeVO.setStore_img(rs.getBytes("store_img"));
 				storeVO.setStore_pass(rs.getInt("store_pass"));
+				storeVO.setStore_authentication(rs.getInt("store_authentication"));
+				storeVO.setStore_validatecode(rs.getString("store_validatecode"));
 				list.add(storeVO); // Store the row in the list
 			}
 
@@ -895,16 +902,7 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 				orderlistVO.setOrd_add(rs.getString("ord_add"));
 				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
 				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-//				orderlistVO.setScore_buyer(rs.getInt("score_buyer"));
-//				orderlistVO.setScore_seller(rs.getInt("score_seller"));
-//				orderlistVO.setRept_buyer(rs.getInt("rept_buyer"));
-//				orderlistVO.setRept_buyer_rsn(readerToString(rs.getCharacterStream("rept_buyer_rsn")));
-//				orderlistVO.setRept_buyer_rev(rs.getInt("rept_buyer_rev"));
-//				orderlistVO.setRept_seller(rs.getInt("rept_seller"));
-//				orderlistVO.setRept_seller_rsn(readerToString(rs.getCharacterStream("rept_seller_rsn")));
-//				orderlistVO.setRept_seller_rev(rs.getInt("rept_seller_rev"));
-//				orderlistVO.setOrd_isreturn(rs.getInt("ord_isreturn"));
-//				orderlistVO.setReturn_rsn(readerToString(rs.getCharacterStream("return_rsn")));
+				orderlistVO.setScore_seller(rs.getInt("score_seller"));
 				set.add(orderlistVO); // Store the row in the vector
 			}
 
@@ -1243,12 +1241,6 @@ public class StoreJNDIDAO implements StoreDAO_interface {
 		else{
 			return null;
 		}
-	}
-
-	@Override
-	public byte[] getImage(String store_id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

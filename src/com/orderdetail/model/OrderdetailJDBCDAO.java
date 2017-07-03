@@ -11,11 +11,11 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	String userid = "ba101g4";
 	String passwd = "ba101g4";
 
-	private static final String INSERT_STMT = "INSERT INTO ORDERDETAIL (ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT,DETAIL_RETURN) VALUES (?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT,DETAIL_RETURN FROM ORDERDETAIL ORDER BY ORD_ID,PROD_ID";
-	private static final String GET_ONE_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT,DETAIL_RETURN FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
+	private static final String INSERT_STMT = "INSERT INTO ORDERDETAIL (ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT) VALUES (?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL ORDER BY ORD_ID,PROD_ID";
+	private static final String GET_ONE_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
 	private static final String DELETE_ORDERDETAIL = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
-	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=?, DETAIL_RETURN=? WHERE ORD_ID = ? AND PROD_ID = ?";
+	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=? WHERE ORD_ID = ? AND PROD_ID = ?";
 
 	@Override
 	public void insert(OrderdetailVO orderdetailVO) {
@@ -33,7 +33,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			pstmt.setString(3, orderdetailVO.getProd_name());
 			pstmt.setInt(4, orderdetailVO.getProd_price());
 			pstmt.setInt(5, orderdetailVO.getDetail_amt());
-			pstmt.setInt(6, orderdetailVO.getDetail_return());
 
 			pstmt.executeUpdate();
 
@@ -76,9 +75,8 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			pstmt.setString(1, orderdetailVO.getProd_name());
 			pstmt.setInt(2, orderdetailVO.getProd_price());
 			pstmt.setInt(3, orderdetailVO.getDetail_amt());
-			pstmt.setInt(4, orderdetailVO.getDetail_return());
-			pstmt.setString(5, orderdetailVO.getOrd_id());
-			pstmt.setString(6, orderdetailVO.getProd_id());
+			pstmt.setString(4, orderdetailVO.getOrd_id());
+			pstmt.setString(5, orderdetailVO.getProd_id());
 
 			pstmt.executeUpdate();
 
@@ -173,7 +171,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 				orderdetailVO.setProd_name(rs.getString("prod_name"));
 				orderdetailVO.setProd_price(rs.getInt("prod_price"));
 				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
-				orderdetailVO.setDetail_return(rs.getInt("detail_return"));
 			}
 
 			// Handle any driver errors
@@ -232,7 +229,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 				orderdetailVO.setProd_name(rs.getString("prod_name"));
 				orderdetailVO.setProd_price(rs.getInt("prod_price"));
 				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
-				orderdetailVO.setDetail_return(rs.getInt("detail_return"));
 				list.add(orderdetailVO); // Store the row in the list
 			}
 
@@ -281,7 +277,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		orderdetailVO.setProd_name("A");
 		orderdetailVO.setProd_price(1);
 		orderdetailVO.setDetail_amt(1);
-		orderdetailVO.setDetail_return(1);
 		dao.insert(orderdetailVO);
 
 		// update()
@@ -291,7 +286,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		orderdetailVO.setProd_name("A");
 		orderdetailVO.setProd_price(1);
 		orderdetailVO.setDetail_amt(1);
-		orderdetailVO.setDetail_return(1);
 		dao.update(orderdetailVO);
 
 		// delete()
@@ -304,7 +298,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		System.out.print(orderdetailVO.getProd_name() + ", ");
 		System.out.print(orderdetailVO.getProd_price() + ", ");
 		System.out.print(orderdetailVO.getDetail_amt() + ", ");
-		System.out.print(orderdetailVO.getDetail_return() + ", ");
 		System.out.println("---------------------");
 
 		// getAll()
@@ -315,7 +308,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			System.out.print(aOrderdetailVO.getProd_name() + ", ");
 			System.out.print(aOrderdetailVO.getProd_price() + ", ");
 			System.out.print(aOrderdetailVO.getDetail_amt() + ", ");
-			System.out.print(aOrderdetailVO.getDetail_return() + ", ");
 			System.out.println();
 		}
 

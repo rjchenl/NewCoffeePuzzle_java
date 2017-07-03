@@ -1,4 +1,4 @@
-package com.orderlist.model;
+package com.spndcoffeelist.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+import com.spndcoffeercd.model.SpndcoffeercdVO;
 
-public class OrderlistJNDIDAO implements OrderlistDAO_interface {
+public class SpndcoffeelistJNDIDAO implements SpndcoffeelistDAO_interface {
 
 	private static DataSource ds = null;
 	static {
@@ -24,17 +24,17 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO ORDERLIST (ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER) VALUES ('ORD' || LPAD(to_char(ORD_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST ORDER BY ORD_ID";
-	private static final String GET_ONE_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE ORD_ID = ?";
-	private static final String GET_Orderdetails_ByOrd_id_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL WHERE ORD_ID = ? ORDER BY ORD_ID,PROD_ID";
+	private static final String INSERT_STMT = "INSERT INTO SPNDCOFFEELIST (LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE) VALUES ('LIST' || LPAD(to_char(LIST_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST ORDER BY LIST_ID";
+	private static final String GET_ONE_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
+	private static final String GET_Spndcoffeercds_ByList_id_STMT = "SELECT RCD_ID,LIST_ID,SINGLE_AMT,RCD_DATE FROM SPNDCOFFEERCD WHERE LIST_ID = ? ORDER BY RCD_ID";
 
-	private static final String DELETE_ORDERDETAILs = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ?";
-	private static final String DELETE_ORDERLIST = "DELETE FROM ORDERLIST WHERE ORD_ID = ?";
-	private static final String UPDATE = "UPDATE ORDERLIST SET MEM_ID=?, STORE_ID=?, ORD_TOTAL=?, ORD_PICK=?, ORD_ADD=?, ORD_SHIPPING=?, ORD_TIME=?, SCORE_SELLER=? WHERE ORD_ID = ?";
+	private static final String DELETE_SPNDCOFFEERCDs = "DELETE FROM SPNDCOFFEERCD WHERE LIST_ID = ?";
+	private static final String DELETE_SPNDCOFFEELIST = "DELETE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
+	private static final String UPDATE = "UPDATE SPNDCOFFEELIST SET SPND_ID=?, MEM_ID=?, SPND_PROD=?, STORE_ID=?, LIST_AMT=?, LIST_LEFT=?, LIST_DATE=? WHERE LIST_ID = ?";
 
 	@Override
-	public void insert(OrderlistVO orderlistVO) {
+	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -43,14 +43,13 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, orderlistVO.getMem_id());
-			pstmt.setString(2, orderlistVO.getStore_id());
-			pstmt.setInt(3, orderlistVO.getOrd_total());
-			pstmt.setInt(4, orderlistVO.getOrd_pick());
-			pstmt.setString(5, orderlistVO.getOrd_add());
-			pstmt.setInt(6, orderlistVO.getOrd_shipping());
-			pstmt.setTimestamp(7, orderlistVO.getOrd_time());
-			pstmt.setInt(8, orderlistVO.getScore_seller());
+			pstmt.setString(1, spndcoffeelistVO.getSpnd_id());
+			pstmt.setString(2, spndcoffeelistVO.getMem_id());
+			pstmt.setString(3, spndcoffeelistVO.getSpnd_prod());
+			pstmt.setString(4, spndcoffeelistVO.getStore_id());
+			pstmt.setInt(5, spndcoffeelistVO.getList_amt());
+			pstmt.setInt(6, spndcoffeelistVO.getList_left());
+			pstmt.setTimestamp(7, spndcoffeelistVO.getList_date());
 
 			pstmt.executeUpdate();
 
@@ -77,7 +76,7 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public void update(OrderlistVO orderlistVO) {
+	public void update(SpndcoffeelistVO spndcoffeelistVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -86,15 +85,14 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setString(1, orderlistVO.getMem_id());
-			pstmt.setString(2, orderlistVO.getStore_id());
-			pstmt.setInt(3, orderlistVO.getOrd_total());
-			pstmt.setInt(4, orderlistVO.getOrd_pick());
-			pstmt.setString(5, orderlistVO.getOrd_add());
-			pstmt.setInt(6, orderlistVO.getOrd_shipping());
-			pstmt.setTimestamp(7, orderlistVO.getOrd_time());
-			pstmt.setInt(8, orderlistVO.getScore_seller());
-			pstmt.setString(9, orderlistVO.getOrd_id());
+			pstmt.setString(1, spndcoffeelistVO.getSpnd_id());
+			pstmt.setString(2, spndcoffeelistVO.getMem_id());
+			pstmt.setString(3, spndcoffeelistVO.getSpnd_prod());
+			pstmt.setString(4, spndcoffeelistVO.getStore_id());
+			pstmt.setInt(5, spndcoffeelistVO.getList_amt());
+			pstmt.setInt(6, spndcoffeelistVO.getList_left());
+			pstmt.setTimestamp(7, spndcoffeelistVO.getList_date());
+			pstmt.setString(8, spndcoffeelistVO.getList_id());
 
 			pstmt.executeUpdate();
 
@@ -121,7 +119,7 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public void delete(String ord_id) {
+	public void delete(String list_id) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -131,15 +129,15 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 
 			con.setAutoCommit(false);
 
-			pstmt = con.prepareStatement(DELETE_ORDERDETAILs);
+			pstmt = con.prepareStatement(DELETE_SPNDCOFFEERCDs);
 
-			pstmt.setString(1, ord_id);
+			pstmt.setString(1, list_id);
 
 			pstmt.executeUpdate();
 
-			pstmt = con.prepareStatement(DELETE_ORDERLIST);
+			pstmt = con.prepareStatement(DELETE_SPNDCOFFEELIST);
 
-			pstmt.setString(1, ord_id);
+			pstmt.setString(1, list_id);
 
 			pstmt.executeUpdate();
 
@@ -176,9 +174,9 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public OrderlistVO findByPrimaryKey(String ord_id) {
+	public SpndcoffeelistVO findByPrimaryKey(String list_id) {
 
-		OrderlistVO orderlistVO = null;
+		SpndcoffeelistVO spndcoffeelistVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -187,21 +185,20 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setString(1, ord_id);
+			pstmt.setString(1, list_id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				orderlistVO = new OrderlistVO();
-				orderlistVO.setOrd_id(rs.getString("ord_id"));
-				orderlistVO.setMem_id(rs.getString("mem_id"));
-				orderlistVO.setStore_id(rs.getString("store_id"));
-				orderlistVO.setOrd_total(rs.getInt("ord_total"));
-				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
-				orderlistVO.setOrd_add(rs.getString("ord_add"));
-				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
-				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-				orderlistVO.setScore_seller(rs.getInt("score_seller"));
+				spndcoffeelistVO = new SpndcoffeelistVO();
+				spndcoffeelistVO.setList_id(rs.getString("list_id"));
+				spndcoffeelistVO.setSpnd_id(rs.getString("spnd_id"));
+				spndcoffeelistVO.setMem_id(rs.getString("mem_id"));
+				spndcoffeelistVO.setSpnd_prod(rs.getString("spnd_prod"));
+				spndcoffeelistVO.setStore_id(rs.getString("store_id"));
+				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
+				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
+				spndcoffeelistVO.setList_date(rs.getTimestamp("list_date"));
 			}
 
 			// Handle any SQL errors
@@ -231,14 +228,14 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 				}
 			}
 		}
-		return orderlistVO;
+		return spndcoffeelistVO;
 	}
 
 	@Override
-	public List<OrderlistVO> getAll() {
+	public List<SpndcoffeelistVO> getAll() {
 
-		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
-		OrderlistVO orderlistVO = null;
+		List<SpndcoffeelistVO> list = new ArrayList<SpndcoffeelistVO>();
+		SpndcoffeelistVO spndcoffeelistVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -250,17 +247,16 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				orderlistVO = new OrderlistVO();
-				orderlistVO.setOrd_id(rs.getString("ord_id"));
-				orderlistVO.setMem_id(rs.getString("mem_id"));
-				orderlistVO.setStore_id(rs.getString("store_id"));
-				orderlistVO.setOrd_total(rs.getInt("ord_total"));
-				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
-				orderlistVO.setOrd_add(rs.getString("ord_add"));
-				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
-				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-				orderlistVO.setScore_seller(rs.getInt("score_seller"));
-				list.add(orderlistVO); // Store the row in the list
+				spndcoffeelistVO = new SpndcoffeelistVO();
+				spndcoffeelistVO.setList_id(rs.getString("list_id"));
+				spndcoffeelistVO.setSpnd_id(rs.getString("spnd_id"));
+				spndcoffeelistVO.setMem_id(rs.getString("mem_id"));
+				spndcoffeelistVO.setSpnd_prod(rs.getString("spnd_prod"));
+				spndcoffeelistVO.setStore_id(rs.getString("store_id"));
+				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
+				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
+				spndcoffeelistVO.setList_date(rs.getTimestamp("list_date"));
+				list.add(spndcoffeelistVO); // Store the row in the list
 			}
 
 			// Handle any SQL errors
@@ -294,28 +290,27 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public Set<OrderdetailVO> getOrderdetailsByOrd_id(String ord_id){
-		Set<OrderdetailVO> set = new LinkedHashSet<OrderdetailVO>();
-		OrderdetailVO orderdetailVO = null;
+	public Set<SpndcoffeercdVO> getSpndcoffeercdsByList_id(String list_id){
+		Set<SpndcoffeercdVO> set = new LinkedHashSet<SpndcoffeercdVO>();
+		SpndcoffeercdVO spndcoffeercdVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_Orderdetails_ByOrd_id_STMT);
-			pstmt.setString(1, ord_id);
+			pstmt = con.prepareStatement(GET_Spndcoffeercds_ByList_id_STMT);
+			pstmt.setString(1, list_id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				orderdetailVO = new OrderdetailVO();
-				orderdetailVO.setOrd_id(rs.getString("ord_id"));
-				orderdetailVO.setProd_id(rs.getString("prod_id"));
-				orderdetailVO.setProd_name(rs.getString("prod_name"));
-				orderdetailVO.setProd_price(rs.getInt("prod_price"));
-				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
-				set.add(orderdetailVO); // Store the row in the vector
+				spndcoffeercdVO = new SpndcoffeercdVO();
+				spndcoffeercdVO.setRcd_id(rs.getString("rcd_id"));
+				spndcoffeercdVO.setList_id(rs.getString("list_id"));
+				spndcoffeercdVO.setSingle_amt(rs.getInt("single_amt"));
+				spndcoffeercdVO.setRcd_date(rs.getTimestamp("rcd_date"));
+				set.add(spndcoffeercdVO); // Store the row in the vector
 			}
 
 			// Handle any SQL errors
