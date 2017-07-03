@@ -1,4 +1,4 @@
-package com.spndcoffee.model;
+package com.rjchnel.spndcoffee.model;
 
 import java.io.Serializable;
 import java.sql.Date;
