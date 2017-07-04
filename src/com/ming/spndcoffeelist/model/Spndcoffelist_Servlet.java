@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 @WebServlet("/ming_Spndcoffelist_Servlet")
 public class Spndcoffelist_Servlet extends HttpServlet {
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
+	//123
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
