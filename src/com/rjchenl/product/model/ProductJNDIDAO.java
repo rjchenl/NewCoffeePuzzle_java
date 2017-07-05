@@ -1,4 +1,4 @@
-package com.product.model;
+package com.rjchenl.product.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -441,6 +441,12 @@ public class ProductJNDIDAO implements ProductDAO_interface {
 		else{
 			return null;
 		}
+	}
+
+	@Override
+	public List<ProductVO> getStoreProductByStoreName(String store_name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -2,7 +2,8 @@ package com.category.model;
 
 import java.util.List;
 import java.util.Set;
-import com.product.model.ProductVO;
+
+import com.rjchenl.product.model.ProductVO;
 
 public interface CategoryDAO_interface {
 

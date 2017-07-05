@@ -17,13 +17,13 @@ import java.util.Set;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.news.model.NewsVO;
 import com.store_tag.model.Store_tagVO;
-import com.product.model.ProductVO;
 import com.orderlist.model.OrderlistVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
 import com.rjchenl.fav_store.model.Fav_storeVO;
+import com.rjchenl.product.model.ProductVO;
 import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rjchnel.spndcoffee.model.SpndcoffeeVO;
 

@@ -8,9 +8,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.rjchenl.product.model.ProductVO;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.product.model.ProductVO;
 
 public class CategoryJNDIDAO implements CategoryDAO_interface {
 

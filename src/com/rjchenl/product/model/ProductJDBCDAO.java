@@ -1,4 +1,4 @@
-package com.product.model;
+package com.rjchenl.product.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import com.orderdetail.model.OrderdetailVO;
+import com.spndcoffeercd.model.SpndcoffeercdVO;
 import com.msg.model.MsgVO;
 
 public class ProductJDBCDAO implements ProductDAO_interface {
@@ -31,7 +32,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 	private static final String DELETE_MSGs = "DELETE FROM MSG WHERE PROD_ID = ?";
 	private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE PROD_ID = ?";
 	private static final String UPDATE = "UPDATE PRODUCT SET STORE_ID=?, PROD_NAME=?, CATE_ID=?, PROD_PRICE=?, PROD_CATEGORY=?, PROD_IMG=?, PROD_AMT=?, PROD_LAUNCH=? WHERE PROD_ID = ?";
-
+	private static final String GET_STORE_PRODUCT ="SELECT P.PROD_NAME FROM PRODUCT P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.PROD_CATEGORY = 2 AND STORE_NAME = ?";
 	@Override
 	public void insert(ProductVO productVO) {
 
@@ -562,6 +563,78 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 		}
 
 */
+	}
+
+	@Override
+	public List<ProductVO> getStoreProductByStoreName(String store_name) {
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		ProductVO productVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		System.out.println("getStoreProductByStoreName step1");
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			System.out.println("getStoreProductByStoreName step1_1");
+			pstmt = con.prepareStatement(GET_STORE_PRODUCT);
+			System.out.println("getStoreProductByStoreName step1_2");
+			pstmt.setString(1, store_name);
+			System.out.println("getStoreProductByStoreName step1_3");
+			rs = pstmt.executeQuery();
+			System.out.println("getStoreProductByStoreName step2");
+
+			while (rs.next()) {
+				System.out.println("getStoreProductByStoreName step3");
+				productVO = new ProductVO();
+//				productVO.setProd_id(rs.getString("prod_id"));
+//				productVO.setStore_id(rs.getString("store_id"));
+				productVO.setProd_name(rs.getString("prod_name"));
+//				productVO.setCate_id(rs.getString("cate_id"));
+//				productVO.setProd_price(rs.getInt("prod_price"));
+//				productVO.setProd_category(rs.getInt("prod_category"));
+//				productVO.setProd_img(rs.getBytes("prod_img"));
+//				productVO.setProd_amt(rs.getInt("prod_amt"));
+//				productVO.setProd_launch(rs.getInt("prod_launch"));
+				
+
+				System.out.println("getStoreProductByStoreName step4");
+				list.add(productVO); // Store the row in the list
+			}
+			System.out.println("getStoreProductByStoreName step5");
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 

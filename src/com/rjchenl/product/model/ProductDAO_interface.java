@@ -1,4 +1,4 @@
-package com.product.model;
+package com.rjchenl.product.model;
 
 import java.util.List;
 import java.util.Set;
@@ -14,5 +14,6 @@ public interface ProductDAO_interface {
 	public List<ProductVO> getAll();
 	public Set<OrderdetailVO> getOrderdetailsByProd_id(String prod_id);
 	public Set<MsgVO> getMsgsByProd_id(String prod_id);
+	public List<ProductVO> getStoreProductByStoreName(String store_name);
 
 }

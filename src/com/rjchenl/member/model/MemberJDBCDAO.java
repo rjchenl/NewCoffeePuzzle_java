@@ -62,6 +62,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	private static final String DELETE_REPT_STOREs = "DELETE FROM REPT_STORE WHERE MEM_ID = ?";
 	private static final String DELETE_MEMBER = "DELETE FROM MEMBER WHERE MEM_ID = ?";
 	private static final String UPDATE = "UPDATE MEMBER SET MEM_ACCT=?, MEM_PWD=?, MEM_NAME=?, MEM_TEL=?, MEM_EMAIL=?, MEM_ADD=?, MEM_POINTS=?, MEM_IMG=? WHERE MEM_ID = ?";
+	
 
 	@Override
 	public void insert(MemberVO memberVO) {

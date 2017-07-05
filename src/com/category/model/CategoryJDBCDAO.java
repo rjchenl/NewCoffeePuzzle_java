@@ -5,7 +5,8 @@ import java.util.List;
 import java.sql.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.product.model.ProductVO;
+
+import com.rjchenl.product.model.ProductVO;
 
 public class CategoryJDBCDAO implements CategoryDAO_interface {
 

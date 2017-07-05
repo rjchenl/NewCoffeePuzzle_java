@@ -1,4 +1,4 @@
-package com.product.model;
+package com.rjchenl.product.model;
 
 import java.io.Serializable;
 
@@ -13,10 +13,24 @@ public class ProductVO implements Serializable {
 	private byte[] prod_img;
 	private Integer prod_amt;
 	private Integer prod_launch;
+	
+	private String store_name;
+
+	public String getStore_name() {
+		return store_name;
+	}
+
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
 
 	public ProductVO(){}
 
-	public ProductVO(String prod_id, String store_id, String prod_name, String cate_id, Integer prod_price, Integer prod_category, byte[] prod_img, Integer prod_amt, Integer prod_launch){
+	
+
+	public ProductVO(String prod_id, String store_id, String prod_name, String cate_id, Integer prod_price,
+			Integer prod_category, byte[] prod_img, Integer prod_amt, Integer prod_launch, String store_name) {
+		super();
 		this.prod_id = prod_id;
 		this.store_id = store_id;
 		this.prod_name = prod_name;
@@ -26,6 +40,7 @@ public class ProductVO implements Serializable {
 		this.prod_img = prod_img;
 		this.prod_amt = prod_amt;
 		this.prod_launch = prod_launch;
+		this.store_name = store_name;
 	}
 
 	public String getProd_id() {
