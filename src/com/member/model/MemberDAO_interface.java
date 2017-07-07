@@ -5,7 +5,6 @@ import java.util.Set;
 import com.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.report.model.ReportVO;
-import com.orderlist.model.OrderlistVO;
 import com.msg.model.MsgVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
@@ -14,6 +13,7 @@ import com.rept_activ.model.Rept_activVO;
 import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
+import com.rjchenl.orderlist.model.OrderlistVO;
 
 public interface MemberDAO_interface {
 

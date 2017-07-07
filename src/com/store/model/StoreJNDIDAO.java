@@ -18,12 +18,12 @@ import com.spndcoffeelist.model.SpndcoffeelistVO;
 import com.rate_n_rev.model.Rate_n_revVO;
 import com.news.model.NewsVO;
 import com.store_tag.model.Store_tagVO;
-import com.orderlist.model.OrderlistVO;
 import com.reply.model.ReplyVO;
 import com.activity.model.ActivityVO;
 import com.fav_store.model.Fav_storeVO;
 import com.photo_store.model.Photo_storeVO;
 import com.rept_store.model.Rept_storeVO;
+import com.rjchenl.orderlist.model.OrderlistVO;
 import com.rjchenl.product.model.ProductVO;
 
 public class StoreJNDIDAO implements StoreDAO_interface {

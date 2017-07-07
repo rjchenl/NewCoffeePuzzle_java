@@ -1,4 +1,4 @@
-package com.orderlist.model;
+package com.rjchenl.orderlist.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

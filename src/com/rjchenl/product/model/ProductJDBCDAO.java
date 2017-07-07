@@ -32,7 +32,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 	private static final String DELETE_MSGs = "DELETE FROM MSG WHERE PROD_ID = ?";
 	private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE PROD_ID = ?";
 	private static final String UPDATE = "UPDATE PRODUCT SET STORE_ID=?, PROD_NAME=?, CATE_ID=?, PROD_PRICE=?, PROD_CATEGORY=?, PROD_IMG=?, PROD_AMT=?, PROD_LAUNCH=? WHERE PROD_ID = ?";
-	private static final String GET_STORE_PRODUCT ="SELECT P.PROD_NAME FROM PRODUCT P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.PROD_CATEGORY = 2 AND STORE_NAME = ?";
+	private static final String GET_STORE_PRODUCT ="SELECT P.PROD_NAME ,P.PROD_PRICE FROM PRODUCT P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.PROD_CATEGORY = 2 AND STORE_NAME = ?";
 	@Override
 	public void insert(ProductVO productVO) {
 
@@ -592,7 +592,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 //				productVO.setStore_id(rs.getString("store_id"));
 				productVO.setProd_name(rs.getString("prod_name"));
 //				productVO.setCate_id(rs.getString("cate_id"));
-//				productVO.setProd_price(rs.getInt("prod_price"));
+				productVO.setProd_price(rs.getInt("prod_price"));
 //				productVO.setProd_category(rs.getInt("prod_category"));
 //				productVO.setProd_img(rs.getBytes("prod_img"));
 //				productVO.setProd_amt(rs.getInt("prod_amt"));

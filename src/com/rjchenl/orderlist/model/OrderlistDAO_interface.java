@@ -1,4 +1,4 @@
-package com.orderlist.model;
+package com.rjchenl.orderlist.model;
 
 import java.util.List;
 import java.util.Set;
