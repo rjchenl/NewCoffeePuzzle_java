@@ -13,10 +13,13 @@ public class SpndcoffeelistVO implements Serializable {
 	private Integer list_amt;
 	private Integer list_left;
 	private Timestamp list_date;
+	
+	private String mem_name;
+
 
 	public SpndcoffeelistVO(){}
 
-	public SpndcoffeelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id, Integer list_amt, Integer list_left, Timestamp list_date){
+	public SpndcoffeelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id, Integer list_amt, Integer list_left, Timestamp list_date, String mem_name){
 		this.list_id = list_id;
 		this.spnd_id = spnd_id;
 		this.mem_id = mem_id;
@@ -25,6 +28,16 @@ public class SpndcoffeelistVO implements Serializable {
 		this.list_amt = list_amt;
 		this.list_left = list_left;
 		this.list_date = list_date;
+		this.mem_name = mem_name;
+
+	}
+
+	public String getMem_name() {
+		return mem_name;
+	}
+
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
 	}
 
 	public String getList_id() {

@@ -11,13 +11,15 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
 	String userid = "ba101g4";
 	String passwd = "ba101g4";
-	// JDBC
-
 	private static final String INSERT_STMT = "INSERT INTO SPNDCOFFEELIST (LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE) VALUES ('LIST' || LPAD(to_char(LIST_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST ORDER BY LIST_ID";
 	private static final String GET_ONE_STMT = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
 	private static final String DELETE = "DELETE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
 	private static final String UPDATE = "UPDATE SPNDCOFFEELIST SET SPND_ID=?, MEM_ID=?, SPND_PROD=?, STORE_ID=?, LIST_AMT=?, LIST_LEFT=?, LIST_DATE=? WHERE LIST_ID = ?";
+
+	private static final String Get_All_STORE = "SELECT P.LIST_ID,P.SPND_ID,M.MEM_ID,P.STORE_ID,P.LIST_AMT,P.LIST_DATE,P.LIST_LEFT,P.SPND_PROD,M.MEM_NAME FROM SPNDCOFFEELIST P JOIN MEMBER M ON P.MEM_ID = M.MEM_ID WHERE P.STORE_ID = ?";
+	// JDBC
+	private static final String Get_Update = "UPDATE SPNDCOFFEELIST SET LIST_LEFT=? WHERE LIST_ID =? AND STORE_ID=?";
 
 	@Override
 	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
@@ -248,6 +250,131 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<SpndcoffeelistVO> getStore(String store_id) {
+		List<SpndcoffeelistVO> list = new ArrayList<SpndcoffeelistVO>();
+		SpndcoffeelistVO spndcoffeelistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(Get_All_STORE);
+	
+			pstmt.setString(1, store_id);
+	
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				spndcoffeelistVO = new SpndcoffeelistVO();
+				spndcoffeelistVO.setList_id(rs.getString("list_id"));
+				spndcoffeelistVO.setSpnd_id(rs.getString("spnd_id"));
+				spndcoffeelistVO.setMem_id(rs.getString("mem_id"));
+				spndcoffeelistVO.setSpnd_prod(rs.getString("spnd_prod"));
+				spndcoffeelistVO.setStore_id(rs.getString("store_id"));
+				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
+				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
+				spndcoffeelistVO.setList_date(rs.getTimestamp("list_date"));
+				spndcoffeelistVO.setMem_name(rs.getString("mem_name"));
+				list.add(spndcoffeelistVO);
+			}
+	
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return  list;
+	}
+
+	@Override
+	public List<SpndcoffeelistVO> getUpdate(String store_id,String list_id,Integer list_left) {
+		List<SpndcoffeelistVO> list = new ArrayList<SpndcoffeelistVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(Get_Update);
+	
+			pstmt.setInt(1, list_left);
+			pstmt.setString(2, list_id);
+			pstmt.setString(3, store_id);
+			
+			System.out.println("-------------------store_id="+store_id);
+			System.out.println("-------------------list_id="+list_id);
+			System.out.println("-------------------list_left="+list_left);
+	
+			int num = pstmt.executeUpdate();
+			System.out.println("2");
+			
+			System.out.println("num: " + num);
+			
+	
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
