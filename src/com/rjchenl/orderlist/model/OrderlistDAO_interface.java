@@ -15,6 +15,8 @@ public interface OrderlistDAO_interface {
 	public List<OrderlistVO> getAll();
 	public Set<OrderdetailVO> getOrderdetailsByOrd_id(String ord_id);
 	
+	public List<OrderlistVO> getMyOrderList(String mem_id);
+	
 	public void insertWithOrderDetail(OrderlistVO orerlistvo,List<OrderdetailVO> list);
 	
 	

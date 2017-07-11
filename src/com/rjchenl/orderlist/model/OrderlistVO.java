@@ -14,6 +14,15 @@ public class OrderlistVO implements Serializable {
 	private Integer ord_shipping;
 	private Timestamp ord_time;
 	private Integer score_seller;
+	private String store_name;
+
+	public String getStore_name() {
+		return store_name;
+	}
+
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
 
 	public OrderlistVO(){}
 

@@ -64,6 +64,16 @@ public class OrderlistServlet extends HttpServlet{
 			List<OrderlistVO> orderlistVO_List = orderlistdao.getAll();
 			writeText(response, gson.toJson(orderlistVO_List));
 		
+		}else if(action.equals("getMyOrderListByMemID")){
+			
+			System.out.println("getMyOrderListByMemID step1");
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			
+			List<OrderlistVO> orderlistVOlist = orderlistdao.getMyOrderList(mem_id);
+			System.out.println("getMyOrderListByMemID step2");
+			writeText(response, gson.toJson(orderlistVOlist));
+			System.out.println("getMyOrderListByMemID step3");
 		}
 		
 		//以下是取圖片

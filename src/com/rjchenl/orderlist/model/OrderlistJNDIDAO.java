@@ -356,5 +356,11 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 		
 	}
 
+	@Override
+	public List<OrderlistVO> getMyOrderList(String mem_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

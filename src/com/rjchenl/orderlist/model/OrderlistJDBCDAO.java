@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.rjchenl.orderdetail.model.OrderdetailJDBCDAO;
 import com.rjchenl.orderdetail.model.OrderdetailVO;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 
@@ -24,7 +25,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 	private static final String DELETE_ORDERDETAILs = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ?";
 	private static final String DELETE_ORDERLIST = "DELETE FROM ORDERLIST WHERE ORD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERLIST SET MEM_ID=?, STORE_ID=?, ORD_TOTAL=?, ORD_PICK=?, ORD_ADD=?, ORD_SHIPPING=?, ORD_TIME=?, SCORE_SELLER=? WHERE ORD_ID = ?";
-
+	private static final String GETMYORDERLIST = "SELECT O.ORD_ID,S.STORE_NAME,O.ORD_PICK,O.ORD_SHIPPING,O.ORD_TIME,O.ORD_TOTAL FROM ORDERLIST O JOIN STORE S ON O.STORE_ID = S.STORE_ID WHERE O.MEM_ID=? ORDER BY O.ORD_ID";
 	
 	
 	
@@ -549,6 +550,72 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 			}
 		}
 		
+	}
+
+	@Override
+	public List<OrderlistVO> getMyOrderList(String mem_id) {
+		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
+		OrderlistVO orderlistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			System.out.println("getMyOrderList step1");
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GETMYORDERLIST);
+			System.out.println("getMyOrderList step2");
+			
+			pstmt.setString(1,mem_id);
+			System.out.println("getMyOrderList step3");
+
+			rs = pstmt.executeQuery();
+			System.out.println("getMyOrderList step4");
+			while (rs.next()) {
+				orderlistVO = new OrderlistVO();
+				orderlistVO.setOrd_id(rs.getString("ord_id"));
+				orderlistVO.setStore_name(rs.getString("store_name"));
+				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
+				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
+				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
+				orderlistVO.setOrd_total(rs.getInt("ord_total"));
+				System.out.println("getMyOrderList step5");
+				list.add(orderlistVO); // Store the row in the list
+			}
+			System.out.println("getMyOrderList step6");
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 
