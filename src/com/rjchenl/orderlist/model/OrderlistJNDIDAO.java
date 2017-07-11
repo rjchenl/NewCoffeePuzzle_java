@@ -8,9 +8,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.rjchenl.orderdetail.model.OrderdetailVO;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
 
 public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 
@@ -346,6 +348,12 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			}
 		}
 		return set;
+	}
+
+	@Override
+	public void insertWithOrderDetail(OrderlistVO orerlistvo, List<OrderdetailVO> list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

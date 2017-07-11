@@ -1,4 +1,4 @@
-package com.orderdetail.model;
+package com.rjchenl.orderdetail.model;
 
 import java.io.Serializable;
 
@@ -11,6 +11,18 @@ public class OrderdetailVO implements Serializable {
 	private Integer detail_amt;
 
 	public OrderdetailVO(){}
+	
+	
+
+	public OrderdetailVO(String prod_id, String prod_name, Integer prod_price, Integer detail_amt) {
+		super();
+		this.prod_id = prod_id;
+		this.prod_name = prod_name;
+		this.prod_price = prod_price;
+		this.detail_amt = detail_amt;
+	}
+
+
 
 	public OrderdetailVO(String ord_id, String prod_id, String prod_name, Integer prod_price, Integer detail_amt){
 		this.ord_id = ord_id;

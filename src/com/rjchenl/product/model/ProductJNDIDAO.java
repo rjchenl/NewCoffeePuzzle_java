@@ -13,8 +13,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+
 import com.msg.model.MsgVO;
+import com.rjchenl.orderdetail.model.OrderdetailVO;
 
 public class ProductJNDIDAO implements ProductDAO_interface {
 

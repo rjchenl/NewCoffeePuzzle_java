@@ -2,8 +2,9 @@ package com.rjchenl.product.model;
 
 import java.util.List;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+
 import com.msg.model.MsgVO;
+import com.rjchenl.orderdetail.model.OrderdetailVO;
 
 public interface ProductDAO_interface {
 

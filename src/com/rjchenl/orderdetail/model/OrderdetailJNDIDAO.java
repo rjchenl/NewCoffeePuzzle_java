@@ -1,15 +1,25 @@
-package com.orderdetail.model;
+package com.rjchenl.orderdetail.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
-public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "ba101g4";
-	String passwd = "ba101g4";
+public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
+
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/ba101g4DB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String INSERT_STMT = "INSERT INTO ORDERDETAIL (ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT) VALUES (?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL ORDER BY ORD_ID,PROD_ID";
@@ -24,8 +34,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setString(1, orderdetailVO.getOrd_id());
@@ -36,9 +45,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -68,8 +74,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
 			pstmt.setString(1, orderdetailVO.getProd_name());
@@ -80,9 +85,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -112,8 +114,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE_ORDERDETAIL);
 
 			pstmt.setString(1, ord_id);
@@ -121,9 +122,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -155,8 +153,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, ord_id);
@@ -173,9 +170,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -216,8 +210,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 
 			rs = pstmt.executeQuery();
@@ -232,9 +225,6 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 				list.add(orderdetailVO); // Store the row in the list
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -265,53 +255,10 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		return list;
 	}
 
-	public static void main(String[] args) {
-
-		OrderdetailJDBCDAO dao = new OrderdetailJDBCDAO();
-
-/*
-		// insert()
-		OrderdetailVO orderdetailVO = new OrderdetailVO();
-		orderdetailVO.setOrd_id("A");
-		orderdetailVO.setProd_id("A");
-		orderdetailVO.setProd_name("A");
-		orderdetailVO.setProd_price(1);
-		orderdetailVO.setDetail_amt(1);
-		dao.insert(orderdetailVO);
-
-		// update()
-		OrderdetailVO orderdetailVO = new OrderdetailVO();
-		orderdetailVO.setOrd_id("A");
-		orderdetailVO.setProd_id("A");
-		orderdetailVO.setProd_name("A");
-		orderdetailVO.setProd_price(1);
-		orderdetailVO.setDetail_amt(1);
-		dao.update(orderdetailVO);
-
-		// delete()
-		dao.delete("A","A");
-
-		// findByPrimaryKey()
-		OrderdetailVO orderdetailVO = dao.findByPrimaryKey("A","A");
-		System.out.print(orderdetailVO.getOrd_id() + ", ");
-		System.out.print(orderdetailVO.getProd_id() + ", ");
-		System.out.print(orderdetailVO.getProd_name() + ", ");
-		System.out.print(orderdetailVO.getProd_price() + ", ");
-		System.out.print(orderdetailVO.getDetail_amt() + ", ");
-		System.out.println("---------------------");
-
-		// getAll()
-		List<OrderdetailVO> list = dao.getAll();
-		for (OrderdetailVO aOrderdetailVO : list) {
-			System.out.print(aOrderdetailVO.getOrd_id() + ", ");
-			System.out.print(aOrderdetailVO.getProd_id() + ", ");
-			System.out.print(aOrderdetailVO.getProd_name() + ", ");
-			System.out.print(aOrderdetailVO.getProd_price() + ", ");
-			System.out.print(aOrderdetailVO.getDetail_amt() + ", ");
-			System.out.println();
-		}
-
-*/
+	@Override
+	public void insert2(OrderdetailVO orderdetailVO, Connection con) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

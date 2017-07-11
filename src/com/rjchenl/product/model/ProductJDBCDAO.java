@@ -11,9 +11,10 @@ import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+
 import com.spndcoffeercd.model.SpndcoffeercdVO;
 import com.msg.model.MsgVO;
+import com.rjchenl.orderdetail.model.OrderdetailVO;
 
 public class ProductJDBCDAO implements ProductDAO_interface {
 
@@ -32,7 +33,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 	private static final String DELETE_MSGs = "DELETE FROM MSG WHERE PROD_ID = ?";
 	private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE PROD_ID = ?";
 	private static final String UPDATE = "UPDATE PRODUCT SET STORE_ID=?, PROD_NAME=?, CATE_ID=?, PROD_PRICE=?, PROD_CATEGORY=?, PROD_IMG=?, PROD_AMT=?, PROD_LAUNCH=? WHERE PROD_ID = ?";
-	private static final String GET_STORE_PRODUCT ="SELECT P.PROD_NAME ,P.PROD_PRICE FROM PRODUCT P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.PROD_CATEGORY = 2 AND STORE_NAME = ?";
+	private static final String GET_STORE_PRODUCT ="SELECT P.PROD_NAME ,P.PROD_PRICE,P.PROD_ID FROM PRODUCT P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.PROD_CATEGORY = 2 AND STORE_NAME = ?";
 	@Override
 	public void insert(ProductVO productVO) {
 
@@ -588,7 +589,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 			while (rs.next()) {
 				System.out.println("getStoreProductByStoreName step3");
 				productVO = new ProductVO();
-//				productVO.setProd_id(rs.getString("prod_id"));
+				productVO.setProd_id(rs.getString("prod_id"));
 //				productVO.setStore_id(rs.getString("store_id"));
 				productVO.setProd_name(rs.getString("prod_name"));
 //				productVO.setCate_id(rs.getString("cate_id"));
