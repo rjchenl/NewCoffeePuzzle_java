@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 @WebServlet("/ming_Spndcoffelist_Servlet")
 public class Spndcoffelist_Servlet extends HttpServlet {
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
+	//123
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -45,6 +46,22 @@ public class Spndcoffelist_Servlet extends HttpServlet {
 
 		if (action.equals("getAll")) {
 			List<SpndcoffeelistVO> newsList = newsDao.getAll();
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getStore")){
+			String store_id = jsonObject.get("store_id").getAsString();
+			List<SpndcoffeelistVO> newsList = newsDao.getStore(store_id);
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getUpdate")){
+			String store_id = jsonObject.get("store_id").getAsString();
+			String list_id = jsonObject.get("list_id").getAsString();
+			Integer list_left = jsonObject.get("list_left").getAsInt();
+			list_left--;
+			System.out.println("store_id :" + store_id);
+			System.out.println("list_id :" + list_id);
+			System.out.println("list_left :" + list_left);
+			List<SpndcoffeelistVO> newsList = newsDao.getUpdate(store_id,list_id,list_left);
 			writeText(response, gson.toJson(newsList));
 		}
 	}
