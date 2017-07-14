@@ -296,7 +296,7 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public List<OrderlistVO> getOrdelist(String store_id) {
+	public List<OrderlistVO> getOrdelist_1(String store_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -354,6 +354,18 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 			}
 		}
 		return set;
+	}
+
+	@Override
+	public List<OrderlistVO> getOrdelist_2(String store_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderlistVO> getOrdelist_3(String store_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

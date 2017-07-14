@@ -45,11 +45,22 @@ public class Orderlist_Servlet extends HttpServlet {
 			List<OrderlistVO> newsList = newsDao.getAll();
 			writeText(response, gson.toJson(newsList));
 		}
-		if (action.equals("getOrdelist")) {
+		if (action.equals("getOrdelist_1")) {
 			String store_id = jsonObject.get("store_id").getAsString();
-			List<OrderlistVO> newsList = newsDao.getOrdelist(store_id);
+			List<OrderlistVO> newsList = newsDao.getOrdelist_1(store_id);
 			writeText(response, gson.toJson(newsList));
 		}
+		if (action.equals("getOrdelist_2")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			List<OrderlistVO> newsList = newsDao.getOrdelist_2(store_id);
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getOrdelist_3")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			List<OrderlistVO> newsList = newsDao.getOrdelist_3(store_id);
+			writeText(response, gson.toJson(newsList));
+		}
+		
 	}
 
 	private void writeText(HttpServletResponse response, String outText)

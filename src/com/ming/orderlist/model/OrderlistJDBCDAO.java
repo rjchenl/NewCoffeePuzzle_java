@@ -23,7 +23,9 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 	private static final String DELETE_ORDERLIST = "DELETE FROM ORDERLIST WHERE ORD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERLIST SET MEM_ID=?, STORE_ID=?, ORD_TOTAL=?, ORD_PICK=?, ORD_ADD=?, ORD_SHIPPING=?, ORD_TIME=?, SCORE_SELLER=? WHERE ORD_ID = ?";
 
-	private static final String GET_ONE_ORDERLIST = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ?";
+	private static final String GET_ONE_ORDERLIST_1 = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ? AND ORD_PICK =3 AND ORD_SHIPPING =1";
+	private static final String GET_ONE_ORDERLIST_2 = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ? AND ORD_PICK =3 AND ORD_SHIPPING =3";
+	private static final String GET_ONE_ORDERLIST_3 = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ? AND ORD_PICK =3 AND ORD_SHIPPING =5";
 	@Override
 	public void insert(OrderlistVO orderlistVO) {
 
@@ -305,7 +307,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 	}
 
 	@Override
-	public List<OrderlistVO> getOrdelist(String store_id) {
+	public List<OrderlistVO> getOrdelist_1(String store_id) {
 		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
 		OrderlistVO orderlistVO = null;
 		Connection con = null;
@@ -315,7 +317,135 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_ONE_ORDERLIST);
+			pstmt = con.prepareStatement(GET_ONE_ORDERLIST_1);
+			
+			pstmt.setString(1, store_id);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				orderlistVO = new OrderlistVO();
+				orderlistVO.setOrd_id(rs.getString("ord_id"));
+				orderlistVO.setMem_id(rs.getString("mem_id"));
+				orderlistVO.setStore_id(rs.getString("store_id"));
+				orderlistVO.setOrd_total(rs.getInt("ord_total"));
+				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
+				orderlistVO.setOrd_add(rs.getString("ord_add"));
+				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
+				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
+				orderlistVO.setScore_seller(rs.getInt("score_seller"));
+				list.add(orderlistVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OrderlistVO> getOrdelist_2(String store_id) {
+		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
+		OrderlistVO orderlistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_ORDERLIST_2);
+			
+			pstmt.setString(1, store_id);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				orderlistVO = new OrderlistVO();
+				orderlistVO.setOrd_id(rs.getString("ord_id"));
+				orderlistVO.setMem_id(rs.getString("mem_id"));
+				orderlistVO.setStore_id(rs.getString("store_id"));
+				orderlistVO.setOrd_total(rs.getInt("ord_total"));
+				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
+				orderlistVO.setOrd_add(rs.getString("ord_add"));
+				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
+				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
+				orderlistVO.setScore_seller(rs.getInt("score_seller"));
+				list.add(orderlistVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OrderlistVO> getOrdelist_3(String store_id) {
+		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
+		OrderlistVO orderlistVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_ORDERLIST_3);
 			
 			pstmt.setString(1, store_id);
 

@@ -12,6 +12,8 @@ public interface OrderlistDAO_interface {
 	public OrderlistVO findByPrimaryKey(String ord_id);
 	public List<OrderlistVO> getAll();
 	public Set<OrderdetailVO> getOrderdetailsByOrd_id(String ord_id);
-	public List<OrderlistVO> getOrdelist(String store_id);
+	public List<OrderlistVO> getOrdelist_1(String store_id);
+	public List<OrderlistVO> getOrdelist_2(String store_id);
+	public List<OrderlistVO> getOrdelist_3(String store_id);
 
 }
