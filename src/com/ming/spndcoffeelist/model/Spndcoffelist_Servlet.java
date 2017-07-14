@@ -3,6 +3,7 @@ package com.ming.spndcoffeelist.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -63,6 +64,19 @@ public class Spndcoffelist_Servlet extends HttpServlet {
 			System.out.println("list_left :" + list_left);
 			List<SpndcoffeelistVO> newsList = newsDao.getUpdate(store_id,list_id,list_left);
 			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getInsert")){
+			SpndcoffeelistVO spndcoffeelistVO = null;
+			String store_id = jsonObject.get("store_id").getAsString();
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			String spnd_id = jsonObject.get("spnd_id").getAsString();
+			String spnd_prod = jsonObject.get("spnd_prod").getAsString();
+			Integer list_amt = 5;
+			Integer list_left = list_amt; 
+			Timestamp list_date = new java.sql.Timestamp(System.currentTimeMillis());
+
+			newsDao.getInsert(store_id,mem_id,spnd_id,spnd_prod,list_amt,list_left,list_date);
+			writeText(response, gson.toJson(newsDao));
 		}
 	}
 

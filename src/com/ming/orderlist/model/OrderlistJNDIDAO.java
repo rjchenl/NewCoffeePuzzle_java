@@ -3,16 +3,26 @@ package com.ming.orderlist.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import com.orderdetail.model.OrderdetailVO;
 
-public class OrderlistJDBCDAO implements OrderlistDAO_interface {
+public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "ba101g4";
-	String passwd = "ba101g4";
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/ba101g4DB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String INSERT_STMT = "INSERT INTO ORDERLIST (ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER) VALUES ('ORD' || LPAD(to_char(ORD_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST ORDER BY ORD_ID";
@@ -23,7 +33,8 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 	private static final String DELETE_ORDERLIST = "DELETE FROM ORDERLIST WHERE ORD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERLIST SET MEM_ID=?, STORE_ID=?, ORD_TOTAL=?, ORD_PICK=?, ORD_ADD=?, ORD_SHIPPING=?, ORD_TIME=?, SCORE_SELLER=? WHERE ORD_ID = ?";
 
-	private static final String GET_ONE_ORDERLIST = "SELECT ORD_ID,MEM_ID,STORE_ID,ORD_TOTAL,ORD_PICK,ORD_ADD,ORD_SHIPPING,ORD_TIME,SCORE_SELLER FROM ORDERLIST WHERE STORE_ID = ?";
+	private static final String GET_ONE_ORDERLIST = "SELECT O.ORD_ID,O.NEN_ID,O.STORE_ID,O.ORD_TOTAL,O.SHIPPING,O.ORD_TIME,D.DRD_ID,D.PROD_ID,D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT FROM O.DRD_ID = D.DRD_ID WHERE STORE_ID=?";
+
 	@Override
 	public void insert(OrderlistVO orderlistVO) {
 
@@ -31,8 +42,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setString(1, orderlistVO.getMem_id());
@@ -46,9 +56,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -78,8 +85,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
 			pstmt.setString(1, orderlistVO.getMem_id());
@@ -94,9 +100,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -126,8 +129,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 
 			con.setAutoCommit(false);
 
@@ -146,9 +148,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 			con.commit();
 			con.setAutoCommit(true);
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			if (con != null) {
@@ -187,8 +186,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, ord_id);
@@ -208,9 +206,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 				orderlistVO.setScore_seller(rs.getInt("score_seller"));
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -251,8 +246,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 
 			rs = pstmt.executeQuery();
@@ -271,9 +265,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 				list.add(orderlistVO); // Store the row in the list
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -306,66 +297,8 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 
 	@Override
 	public List<OrderlistVO> getOrdelist(String store_id) {
-		List<OrderlistVO> list = new ArrayList<OrderlistVO>();
-		OrderlistVO orderlistVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_ONE_ORDERLIST);
-			
-			pstmt.setString(1, store_id);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				orderlistVO = new OrderlistVO();
-				orderlistVO.setOrd_id(rs.getString("ord_id"));
-				orderlistVO.setMem_id(rs.getString("mem_id"));
-				orderlistVO.setStore_id(rs.getString("store_id"));
-				orderlistVO.setOrd_total(rs.getInt("ord_total"));
-				orderlistVO.setOrd_pick(rs.getInt("ord_pick"));
-				orderlistVO.setOrd_add(rs.getString("ord_add"));
-				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
-				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
-				orderlistVO.setScore_seller(rs.getInt("score_seller"));
-				list.add(orderlistVO); // Store the row in the list
-			}
-
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -377,8 +310,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_Orderdetails_ByOrd_id_STMT);
 			pstmt.setString(1, ord_id);
 
@@ -394,9 +326,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 				set.add(orderdetailVO); // Store the row in the vector
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -425,81 +354,6 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 			}
 		}
 		return set;
-	}
-
-	public static void main(String[] args) {
-
-		OrderlistJDBCDAO dao = new OrderlistJDBCDAO();
-
-/*
-		// insert()
-		OrderlistVO orderlistVO = new OrderlistVO();
-		orderlistVO.setOrd_id("A");
-		orderlistVO.setMem_id("A");
-		orderlistVO.setStore_id("A");
-		orderlistVO.setOrd_total(1);
-		orderlistVO.setOrd_pick(1);
-		orderlistVO.setOrd_add("A");
-		orderlistVO.setOrd_shipping(1);
-		orderlistVO.setOrd_time(java.sql.Timestamp.valueOf("2007-12-03 10:15:30"));
-		orderlistVO.setScore_seller(1);
-		dao.insert(orderlistVO);
-
-		// update()
-		OrderlistVO orderlistVO = new OrderlistVO();
-		orderlistVO.setOrd_id("A");
-		orderlistVO.setMem_id("A");
-		orderlistVO.setStore_id("A");
-		orderlistVO.setOrd_total(1);
-		orderlistVO.setOrd_pick(1);
-		orderlistVO.setOrd_add("A");
-		orderlistVO.setOrd_shipping(1);
-		orderlistVO.setOrd_time(java.sql.Timestamp.valueOf("2007-12-03 10:15:30"));
-		orderlistVO.setScore_seller(1);
-		dao.update(orderlistVO);
-
-		// delete()
-		dao.delete("A");
-
-		// findByPrimaryKey()
-		OrderlistVO orderlistVO = dao.findByPrimaryKey("A");
-		System.out.print(orderlistVO.getOrd_id() + ", ");
-		System.out.print(orderlistVO.getMem_id() + ", ");
-		System.out.print(orderlistVO.getStore_id() + ", ");
-		System.out.print(orderlistVO.getOrd_total() + ", ");
-		System.out.print(orderlistVO.getOrd_pick() + ", ");
-		System.out.print(orderlistVO.getOrd_add() + ", ");
-		System.out.print(orderlistVO.getOrd_shipping() + ", ");
-		System.out.print(orderlistVO.getOrd_time() + ", ");
-		System.out.print(orderlistVO.getScore_seller() + ", ");
-		System.out.println("---------------------");
-
-		// getAll()
-		List<OrderlistVO> list = dao.getAll();
-		for (OrderlistVO aOrderlistVO : list) {
-			System.out.print(aOrderlistVO.getOrd_id() + ", ");
-			System.out.print(aOrderlistVO.getMem_id() + ", ");
-			System.out.print(aOrderlistVO.getStore_id() + ", ");
-			System.out.print(aOrderlistVO.getOrd_total() + ", ");
-			System.out.print(aOrderlistVO.getOrd_pick() + ", ");
-			System.out.print(aOrderlistVO.getOrd_add() + ", ");
-			System.out.print(aOrderlistVO.getOrd_shipping() + ", ");
-			System.out.print(aOrderlistVO.getOrd_time() + ", ");
-			System.out.print(aOrderlistVO.getScore_seller() + ", ");
-			System.out.println();
-		}
-
-		Set<OrderdetailVO> set = dao.getOrderdetailsByOrd_id("A");
-		for (OrderdetailVO aOrderdetail : set) {
-			System.out.print(aOrderdetail.getOrd_id() + ", ");
-			System.out.print(aOrderdetail.getProd_id() + ", ");
-			System.out.print(aOrderdetail.getProd_name() + ", ");
-			System.out.print(aOrderdetail.getProd_price() + ", ");
-			System.out.print(aOrderdetail.getDetail_amt() + ", ");
-			System.out.println();
-		}
-
-*/
 	}
 
 

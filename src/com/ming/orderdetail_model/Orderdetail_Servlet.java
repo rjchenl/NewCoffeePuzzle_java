@@ -1,4 +1,4 @@
-package com.ming.orderlist.model;
+package com.ming.orderdetail_model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,14 +14,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
-@WebServlet("/ming_Orderlist_Servlet")
-public class Orderlist_Servlet extends HttpServlet {
+@WebServlet("/ming_Orderdetail_Servlet")
+public class Orderdetail_Servlet extends HttpServlet {
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		OrderlistDAO_interface Orderlist_Dao = new OrderlistJDBCDAO();
-		List<OrderlistVO> newsList = Orderlist_Dao.getAll();
+		OrderdetailDAO_interface Orderlist_Dao = new OrderdetailJDBCDAO();
+		List<OrderdetailVO> newsList = Orderlist_Dao.getAll();
 		writeText(response, new Gson().toJson(newsList));
 	}
 
@@ -37,17 +37,17 @@ public class Orderlist_Servlet extends HttpServlet {
 		}
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
 				JsonObject.class);
-		OrderlistDAO_interface newsDao = new OrderlistJDBCDAO();
+		OrderdetailDAO_interface newsDao = new OrderdetailJDBCDAO();
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("action: " + action);
 
 		if (action.equals("getAll")) {
-			List<OrderlistVO> newsList = newsDao.getAll();
+			List<OrderdetailVO> newsList = newsDao.getAll();
 			writeText(response, gson.toJson(newsList));
 		}
-		if (action.equals("getOrdelist")) {
+		if (action.equals("getOrderdetail")) {
 			String store_id = jsonObject.get("store_id").getAsString();
-			List<OrderlistVO> newsList = newsDao.getOrdelist(store_id);
+			List<OrderdetailVO> newsList = newsDao.getOrderdetail(store_id);
 			writeText(response, gson.toJson(newsList));
 		}
 	}

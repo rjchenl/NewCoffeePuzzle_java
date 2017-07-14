@@ -20,7 +20,7 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	private static final String Get_All_STORE = "SELECT P.LIST_ID,P.SPND_ID,M.MEM_ID,P.STORE_ID,P.LIST_AMT,P.LIST_DATE,P.LIST_LEFT,P.SPND_PROD,M.MEM_NAME FROM SPNDCOFFEELIST P JOIN MEMBER M ON P.MEM_ID = M.MEM_ID WHERE P.STORE_ID = ?";
 	// JDBC
 	private static final String Get_Update = "UPDATE SPNDCOFFEELIST SET LIST_LEFT=? WHERE LIST_ID =? AND STORE_ID=?";
-
+	private static final String Get_INSERT = "INSERT INTO SPNDCOFFEELIST (LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE) VALUES ('LIST' || LPAD(to_char(LIST_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?)";
 	@Override
 	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
 
@@ -65,6 +65,53 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void getInsert(String store_id, String mem_id, String spnd_id, String spnd_prod, Integer list_amt,
+			Integer list_left, Timestamp list_date) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(Get_INSERT);
+
+			pstmt.setString(1, spnd_id);
+			pstmt.setString(2, mem_id);
+			pstmt.setString(3, spnd_prod);
+			pstmt.setString(4, store_id);
+			pstmt.setInt(5, list_amt);
+			pstmt.setInt(6, list_left);
+			pstmt.setTimestamp(7, list_date);
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
 	}
 
 	@Override
