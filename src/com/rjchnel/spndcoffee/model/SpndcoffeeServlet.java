@@ -1,8 +1,7 @@
-package com.rjchenl.spndcoffeelist.model;
+package com.rjchnel.spndcoffee.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -13,24 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.rjchenl.fav_store.model.Fav_storeVO;
-import com.rjchenl.server.activies.ActivityDAO_interface;
-import com.rjchenl.server.activies.ActivityJDBCDAO;
-import com.rjchenl.server.activies.ActivityVO;
-import com.rjehcnl.server.main.ImageUtil;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistDAO_interface;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistJDBCDAO;
+import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/SpndcoffeelistServlet")
-public class SpndcoffeelistServlet extends HttpServlet{
-	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
+@WebServlet("/SpndcoffeeServlet")
+public class SpndcoffeeServlet extends HttpServlet {
+	
+private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		SpndcoffeelistDAO_interface spndDAO = new SpndcoffeelistJDBCDAO();
-		List<SpndcoffeelistVO> spndList = spndDAO.getAll();
+		SpndcoffeeDAO_interface spndDAO = new SpndcoffeeJDBCDAO();
+		List<SpndcoffeeVO> spndList = spndDAO.getAll();
 		writeText(response, new Gson().toJson(spndList));
 
 		
@@ -41,8 +38,7 @@ public class SpndcoffeelistServlet extends HttpServlet{
 			throws ServletException, IOException {
 	
 		request.setCharacterEncoding("UTF-8");
-//		Gson gson = new Gson();
-		Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+		Gson gson = new Gson();
 		BufferedReader br = request.getReader();
 		StringBuilder jsonIn = new StringBuilder();
 		String line = null;
@@ -52,7 +48,7 @@ public class SpndcoffeelistServlet extends HttpServlet{
 	System.out.println("Receive json from app : "+jsonIn);
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
 				JsonObject.class);
-		SpndcoffeelistDAO_interface spndDAO = new SpndcoffeelistJDBCDAO();
+		SpndcoffeeDAO_interface spndDAO = new SpndcoffeeJDBCDAO();
 		
 		String action = jsonObject.get("action").getAsString();
 		
@@ -62,24 +58,14 @@ public class SpndcoffeelistServlet extends HttpServlet{
 
 		if (action.equals("getAll")) {
 			
-			List<SpndcoffeelistVO> spndList = spndDAO.getAll();
+			List<SpndcoffeeVO> spndList = spndDAO.getAll();
 			writeText(response, gson.toJson(spndList));
 		
 		
-		}else if(action.equals("getMySpndCoffeeList")){
-			
-			String mem_id = jsonObject.get("mem_id").getAsString();
-			
-			List<SpndcoffeelistVO> spndList = spndDAO.getMySpndCoffeeList(mem_id);
-			
+		}else if(action.equals("getAll_store_name")){
+			List<SpndcoffeeVO> spndList = spndDAO.getAll_store_name();
 			writeText(response, gson.toJson(spndList));
 		}
-		
-		
-		
-		
-		
-		
 		
 //		else if(action.equals("getImage")){
 //			

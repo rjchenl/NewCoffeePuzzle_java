@@ -12,6 +12,16 @@ public class SpndcoffeeVO implements Serializable {
 	private Date spnd_enddate;
 	private Integer spnd_amt;
 	private byte[] spnd_img;
+	private String store_name;
+	
+
+	public String getStore_name() {
+		return store_name;
+	}
+
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
 
 	public SpndcoffeeVO(){}
 

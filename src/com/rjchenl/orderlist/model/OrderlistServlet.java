@@ -98,7 +98,6 @@ public class OrderlistServlet extends HttpServlet{
 		
 		if(action.equals("orderListInsert")){
 			
-			System.out.println("enter orderListInsert");
 			
 			String OrderListVO = jsonObject.get("OrderListVO").getAsString();
 			OrderlistVO orderlistVO = gson.fromJson(OrderListVO, OrderlistVO.class);
@@ -110,9 +109,8 @@ public class OrderlistServlet extends HttpServlet{
 			List<OrderdetailVO> orderdetailVO = new Gson().fromJson(OrderdtailVOList, listType);
 			
 			
+			
 			orderlistdao.insertWithOrderDetail(orderlistVO, orderdetailVO);
-			System.out.println("out orderListInsert");
-//			
 
 		
 		}

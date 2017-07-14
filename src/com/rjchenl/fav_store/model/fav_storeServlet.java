@@ -95,7 +95,7 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 			
 			List<Fav_storeVO> fav_storeVOList = fav_storeDAO.getCombinationString();
 			
-			Boolean isExist = false;
+			boolean isExist = false;
 			
 			for(Fav_storeVO vo :fav_storeVOList ){
 				
@@ -106,7 +106,8 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 				}
 			}
 			
-			if(isExist == false){
+			if(!isExist){
+				//新增收藏店家
 				fav_storeDAO.insert(fav_storeVO);
 				System.out.println("未加過此店家");
 			}

@@ -13,5 +13,6 @@ public interface SpndcoffeeDAO_interface {
 	public SpndcoffeeVO findByPrimaryKey(String spnd_id);
 	public List<SpndcoffeeVO> getAll();
 	public Set<SpndcoffeelistVO> getSpndcoffeelistsBySpnd_id(String spnd_id);
+	public List<SpndcoffeeVO> getAll_store_name();
 
 }

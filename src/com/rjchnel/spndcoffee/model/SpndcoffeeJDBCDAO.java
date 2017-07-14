@@ -28,6 +28,8 @@ public class SpndcoffeeJDBCDAO implements SpndcoffeeDAO_interface {
 	private static final String DELETE_SPNDCOFFEE = "DELETE FROM SPNDCOFFEE WHERE SPND_ID = ?";
 	private static final String UPDATE = "UPDATE SPNDCOFFEE SET STORE_ID=?, SPND_NAME=?, SPND_PROD=?, SPND_ENDDATE=?, SPND_AMT=?, SPND_IMG=? WHERE SPND_ID = ?";
 
+	private static final String GET_ALL_STMT_STORE_NAME = "SELECT P.SPND_ID,P.STORE_ID,S.STORE_NAME,P.SPND_NAME,P.SPND_PROD,to_char(P.SPND_ENDDATE,'yyyy-mm-dd') SPND_ENDDATE,P.SPND_AMT FROM SPNDCOFFEE P  JOIN STORE S ON P.STORE_ID = S.STORE_ID ORDER BY SPND_ID";
+	
 	@Override
 	public void insert(SpndcoffeeVO spndcoffeeVO) {
 
@@ -263,7 +265,7 @@ public class SpndcoffeeJDBCDAO implements SpndcoffeeDAO_interface {
 				spndcoffeeVO.setSpnd_prod(rs.getString("spnd_prod"));
 				spndcoffeeVO.setSpnd_enddate(rs.getDate("spnd_enddate"));
 				spndcoffeeVO.setSpnd_amt(rs.getInt("spnd_amt"));
-				spndcoffeeVO.setSpnd_img(rs.getBytes("spnd_img"));
+//				spndcoffeeVO.setSpnd_img(rs.getBytes("spnd_img"));
 				list.add(spndcoffeeVO); // Store the row in the list
 			}
 
@@ -445,6 +447,65 @@ public class SpndcoffeeJDBCDAO implements SpndcoffeeDAO_interface {
 		}
 
 */
+	}
+
+	@Override
+	public List<SpndcoffeeVO> getAll_store_name() {
+		List<SpndcoffeeVO> list = new ArrayList<SpndcoffeeVO>();
+		SpndcoffeeVO spndcoffeeVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_STMT_STORE_NAME);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				spndcoffeeVO = new SpndcoffeeVO();
+				spndcoffeeVO.setStore_name(rs.getString("store_name"));
+				spndcoffeeVO.setSpnd_id(rs.getString("spnd_id"));
+				spndcoffeeVO.setStore_id(rs.getString("store_id"));
+				spndcoffeeVO.setSpnd_name(rs.getString("spnd_name"));
+				spndcoffeeVO.setSpnd_prod(rs.getString("spnd_prod"));
+				spndcoffeeVO.setSpnd_enddate(rs.getDate("spnd_enddate"));
+				spndcoffeeVO.setSpnd_amt(rs.getInt("spnd_amt"));
+//				spndcoffeeVO.setSpnd_img(rs.getBytes("spnd_img"));
+				list.add(spndcoffeeVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 

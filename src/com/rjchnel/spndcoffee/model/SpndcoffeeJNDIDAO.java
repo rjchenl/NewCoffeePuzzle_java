@@ -345,5 +345,11 @@ public class SpndcoffeeJNDIDAO implements SpndcoffeeDAO_interface {
 		return set;
 	}
 
+	@Override
+	public List<SpndcoffeeVO> getAll_store_name() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
