@@ -49,16 +49,45 @@ public class Orderlist_Servlet extends HttpServlet {
 			String store_id = jsonObject.get("store_id").getAsString();
 			List<OrderlistVO> newsList = newsDao.getOrdelist_1(store_id);
 			writeText(response, gson.toJson(newsList));
-		}
+		}else
 		if (action.equals("getOrdelist_2")) {
 			String store_id = jsonObject.get("store_id").getAsString();
 			List<OrderlistVO> newsList = newsDao.getOrdelist_2(store_id);
 			writeText(response, gson.toJson(newsList));
-		}
+		}else
 		if (action.equals("getOrdelist_3")) {
 			String store_id = jsonObject.get("store_id").getAsString();
 			List<OrderlistVO> newsList = newsDao.getOrdelist_3(store_id);
 			writeText(response, gson.toJson(newsList));
+		}else
+		if (action.equals("getOrdelist_4")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			List<OrderlistVO> newsList = newsDao.getOrdelist_4(store_id);
+			writeText(response, gson.toJson(newsList));
+		}else
+		if (action.endsWith("getOrdelist_Update")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id = jsonObject.get("ord_id").getAsString();
+			newsDao.getOrdelist_Update(store_id,ord_id);
+			writeText(response, gson.toJson(newsDao));
+		}else
+		if (action.endsWith("getOrdelist_NO_Update")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id = jsonObject.get("ord_id").getAsString();
+			newsDao.getOrdelist_NO_Update(store_id,ord_id);
+			writeText(response, gson.toJson(newsDao));
+		}else
+		if (action.endsWith("getOrdelist_GO_Update")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id_2 = jsonObject.get("ord_id_2").getAsString();
+			newsDao.getOrdelist_GO_Update(store_id,ord_id_2);
+			writeText(response, gson.toJson(newsDao));
+		}
+		if (action.endsWith("getDeliveryUpdate")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id = jsonObject.get("ord_id").getAsString();
+			newsDao.getDeliveryUpdate(store_id,ord_id);
+			writeText(response, gson.toJson(newsDao));
 		}
 		
 	}

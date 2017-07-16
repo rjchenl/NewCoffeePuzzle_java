@@ -368,5 +368,34 @@ public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 		return null;
 	}
 
+	@Override
+	public List<OrderlistVO> getOrdelist_4(String store_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void getOrdelist_Update(String store_id, String ord_id) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void getOrdelist_NO_Update(String store_id, String ord_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getOrdelist_GO_Update(String store_id, String ord_id_2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getDeliveryUpdate(String store_id, String ord_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
