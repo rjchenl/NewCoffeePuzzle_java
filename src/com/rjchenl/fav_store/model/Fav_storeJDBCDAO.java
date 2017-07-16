@@ -355,5 +355,62 @@ public class Fav_storeJDBCDAO implements Fav_storeDAO_interface {
 		return image;
 	}
 
+	@Override
+	public List<Fav_storeVO> getMyfavoriateStoreByMemId() {
+		List<Fav_storeVO> list = new ArrayList<Fav_storeVO>();
+		Fav_storeVO fav_storeVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//to do here
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				fav_storeVO = new Fav_storeVO();
+				fav_storeVO.setMem_id(rs.getString("mem_id"));
+				fav_storeVO.setStore_id(rs.getString("store_id"));
+				list.add(fav_storeVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
 
 }

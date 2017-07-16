@@ -10,7 +10,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+import com.ming.orderdetail_model.OrderdetailVO;
 
 public class OrderlistJNDIDAO implements OrderlistDAO_interface {
 

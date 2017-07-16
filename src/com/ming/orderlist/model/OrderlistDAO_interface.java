@@ -2,7 +2,7 @@ package com.ming.orderlist.model;
 
 import java.util.List;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+import com.ming.orderdetail_model.OrderdetailVO;
 
 public interface OrderlistDAO_interface {
 

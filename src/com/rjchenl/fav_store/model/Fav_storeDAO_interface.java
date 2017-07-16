@@ -10,5 +10,6 @@ public interface Fav_storeDAO_interface {
 	public List<Fav_storeVO> getAll();
 	public List<Fav_storeVO> getCombinationString ();
 	public byte[] getImage(String store_id);
+	public List<Fav_storeVO> getMyfavoriateStoreByMemId();
 
 }

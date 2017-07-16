@@ -217,5 +217,11 @@ public class Fav_storeJNDIDAO implements Fav_storeDAO_interface {
 		return null;
 	}
 
+	@Override
+	public List<Fav_storeVO> getMyfavoriateStoreByMemId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

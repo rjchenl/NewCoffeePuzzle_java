@@ -16,6 +16,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT ORD_ID,PROD_ID,PROD_NAME,PROD_PRICE,DETAIL_AMT FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
 	private static final String DELETE_ORDERDETAIL = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=? WHERE ORD_ID = ? AND PROD_ID = ?";
+	private static final String GET_MY_ORDERTAIL = "SELECT D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT FROM ORDERDETAIL D JOIN ORDERLIST L ON D.ORD_ID = L.ORD_ID WHERE D.ORD_ID = ?";
 
 	@Override
 	public void insert(OrderdetailVO orderdetailVO) {
@@ -365,6 +366,73 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			
 		
 		
+	}
+
+	@Override
+	public List<OrderdetailVO> findOderdetailVOByOrdid(String ord_id) {
+		
+		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
+		OrderdetailVO orderdetailVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+	
+		try {
+			System.out.println("0715_step1");
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_MY_ORDERTAIL);
+			System.out.println("0715_step2");
+			
+			pstmt.setString(1,ord_id);
+			
+			System.out.println("0715_step3");
+			rs = pstmt.executeQuery();
+			System.out.println("0715_step4");
+			while (rs.next()) {
+				System.out.println("0715_step5");
+				orderdetailVO = new OrderdetailVO();
+//				orderdetailVO.setProd_id(rs.getString("prod_id"));
+				orderdetailVO.setProd_name(rs.getString("prod_name"));
+				orderdetailVO.setProd_price(rs.getInt("prod_price"));
+				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
+				list.add(orderdetailVO);
+				System.out.println("0715_step6");
+			}
+			System.out.println("0715_step7");
+			
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+		return list;
 	}
 
 

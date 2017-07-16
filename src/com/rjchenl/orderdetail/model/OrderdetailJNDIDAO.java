@@ -261,5 +261,13 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 		
 	}
 
+	@Override
+	public List<OrderdetailVO> findOderdetailVOByOrdid(String ord_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 }

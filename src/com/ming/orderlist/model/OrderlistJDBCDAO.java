@@ -5,7 +5,7 @@ import java.util.List;
 import java.sql.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import com.orderdetail.model.OrderdetailVO;
+import com.ming.orderdetail_model.OrderdetailVO;
 
 public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 
