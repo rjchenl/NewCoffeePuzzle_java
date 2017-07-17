@@ -9,6 +9,6 @@ public interface OrderdetailDAO_interface {
 	public void delete(String ord_id, String prod_id);
 	public OrderdetailVO findByPrimaryKey(String ord_id, String prod_id);
 	public List<OrderdetailVO> getAll();
-	public List<OrderdetailVO> getOrderdetail(String store_id);
+	public List<OrderdetailVO> getOrderdetail(String store_id,String ord_id);
 
 }

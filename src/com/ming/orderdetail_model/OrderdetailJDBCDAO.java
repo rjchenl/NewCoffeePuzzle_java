@@ -17,7 +17,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	private static final String DELETE_ORDERDETAIL = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=? WHERE ORD_ID = ? AND PROD_ID = ?";
 
-	private static final String GET_ALL_Orderdetail = "SELECT D.ORD_ID,D.PROD_ID,D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT,O.ORD_ID,O.STORE_ID FROM ORDERDETAIL D JOIN ORDERLIST O ON D.ORD_ID = O.ORD_ID WHERE O.STORE_ID =?";
+	private static final String GET_ALL_Orderdetail = "SELECT D.ORD_ID,D.PROD_ID,D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT,O.ORD_ID,O.STORE_ID FROM ORDERDETAIL D JOIN ORDERLIST O ON D.ORD_ID = O.ORD_ID WHERE O.STORE_ID =? AND O.ORD_ID=?";
 	@Override
 	public void insert(OrderdetailVO orderdetailVO) {
 
@@ -267,7 +267,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public List<OrderdetailVO> getOrderdetail(String store_id) {
+	public List<OrderdetailVO> getOrderdetail(String store_id,String ord_id) {
 		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
 		OrderdetailVO orderdetailVO = null;
 		Connection con = null;
@@ -280,6 +280,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			pstmt = con.prepareStatement(GET_ALL_Orderdetail);
 			
 			pstmt.setString(1, store_id);
+			pstmt.setString(2, ord_id);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

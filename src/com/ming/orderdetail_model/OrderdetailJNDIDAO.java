@@ -256,7 +256,7 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public List<OrderdetailVO> getOrderdetail(String store_id) {
+	public List<OrderdetailVO> getOrderdetail(String store_id,String ord_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
