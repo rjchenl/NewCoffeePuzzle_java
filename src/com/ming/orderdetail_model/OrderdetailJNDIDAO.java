@@ -256,7 +256,25 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public List<OrderdetailVO> getOrderdetail(String store_id) {
+	public List<OrderdetailVO> getOrderdetail(String store_id,String ord_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_2(String store_id, String ord_id_2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_3(String store_id, String ord_id_3) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_4(String store_id, String ord_id_4) {
 		// TODO Auto-generated method stub
 		return null;
 	}

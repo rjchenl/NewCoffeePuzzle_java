@@ -100,12 +100,13 @@ public class OrderlistServlet extends HttpServlet{
 		
 		if(action.equals("orderListInsert")){
 			
+
 			System.out.println("start orderListInsert");
 			String OrderListVO = jsonObject.get("OrderListVO").getAsString();
 			System.out.println("OrderListVO :"+OrderListVO);
 			OrderlistVO orderlistVO = gson.fromJson(OrderListVO, OrderlistVO.class);
 			System.out.println("step2");
-			
+
 			String OrderdtailVOList = jsonObject.get("OrderdtailVOList").getAsString();
 
 			
@@ -113,12 +114,14 @@ public class OrderlistServlet extends HttpServlet{
 		
 
 			Type listType = new TypeToken<ArrayList<OrderdetailVO>>(){}.getType();
+			System.out.println("0716_step3");
 			List<OrderdetailVO> orderdetailVO = new Gson().fromJson(OrderdtailVOList, listType);
+			System.out.println("0716_step4");
 			
 			
 			
 			orderlistdao.insertWithOrderDetail(orderlistVO, orderdetailVO);
-
+			System.out.println("0716_step5");
 		
 		}
 		

@@ -47,7 +47,26 @@ public class Orderdetail_Servlet extends HttpServlet {
 		}
 		if (action.equals("getOrderdetail")) {
 			String store_id = jsonObject.get("store_id").getAsString();
-			List<OrderdetailVO> newsList = newsDao.getOrderdetail(store_id);
+			String ord_id = jsonObject.get("ord_id").getAsString();
+			List<OrderdetailVO> newsList = newsDao.getOrderdetail(store_id,ord_id);
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getOrderdetail_2")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id_2 = jsonObject.get("ord_id_2").getAsString();
+			List<OrderdetailVO> newsList = newsDao.getOrderdetail_2(store_id,ord_id_2);
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getOrderdetail_3")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id_3 = jsonObject.get("ord_id_3").getAsString();
+			List<OrderdetailVO> newsList = newsDao.getOrderdetail_3(store_id,ord_id_3);
+			writeText(response, gson.toJson(newsList));
+		}
+		if (action.equals("getOrderdetail_4")) {
+			String store_id = jsonObject.get("store_id").getAsString();
+			String ord_id_4 = jsonObject.get("ord_id_4").getAsString();
+			List<OrderdetailVO> newsList = newsDao.getOrderdetail_4(store_id,ord_id_4);
 			writeText(response, gson.toJson(newsList));
 		}
 	}

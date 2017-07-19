@@ -23,6 +23,9 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	private static final String DELETE = "DELETE FROM MEMBER WHERE MEM_ID = ?";
 	private static final String UPDATE = "UPDATE MEMBER SET MEM_ACCT=?, MEM_PWD=?, MEM_NAME=?, MEM_TEL=?, MEM_EMAIL=?, MEM_ADD=?, MEM_POINTS=?, MEM_IMG=? WHERE MEM_ID = ?";
 	private static final String GET_ONE_MEM = "SELECT MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG FROM MEMBER WHERE MEM_ACCT = ?" ;
+	
+	private static final String GET_INSERT_MEM = "INSERT INTO MEMBER (MEM_ID,MEM_ACCT,MEM_PWD,MEM_NAME,MEM_TEL,MEM_EMAIL,MEM_ADD,MEM_POINTS,MEM_IMG) VALUES ('MEM' || LPAD(to_char(MEM_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?, ?)";
+	
 	@Override
 	public void insert(MemberVO memberVO) {
 
@@ -68,6 +71,54 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void getMem_Insert(String inser_memid, String inser_mem_psw, String inser_mem_name, String inser_mem_nanber,
+			String inser_mem_mail, String mem_add, Integer mem_points, byte[] mem_img) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_INSERT_MEM);
+
+			pstmt.setString(1, inser_memid);
+			pstmt.setString(2, inser_mem_psw);
+			pstmt.setString(3, inser_mem_name);
+			pstmt.setString(4, inser_mem_nanber);
+			pstmt.setString(5, inser_mem_mail);
+			pstmt.setString(6, mem_add);
+			pstmt.setInt(7, mem_points);
+			pstmt.setBytes(8, mem_img);
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+				
 	}
 
 	@Override

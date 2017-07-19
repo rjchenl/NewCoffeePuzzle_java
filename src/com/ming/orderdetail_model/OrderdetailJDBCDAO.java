@@ -17,7 +17,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	private static final String DELETE_ORDERDETAIL = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ? AND PROD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERDETAIL SET PROD_NAME=?, PROD_PRICE=?, DETAIL_AMT=? WHERE ORD_ID = ? AND PROD_ID = ?";
 
-	private static final String GET_ALL_Orderdetail = "SELECT D.ORD_ID,D.PROD_ID,D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT,O.ORD_ID,O.STORE_ID FROM ORDERDETAIL D JOIN ORDERLIST O ON D.ORD_ID = O.ORD_ID WHERE O.STORE_ID =?";
+	private static final String GET_ALL_Orderdetail = "SELECT D.ORD_ID,D.PROD_ID,D.PROD_NAME,D.PROD_PRICE,D.DETAIL_AMT,O.ORD_ID,O.STORE_ID FROM ORDERDETAIL D JOIN ORDERLIST O ON D.ORD_ID = O.ORD_ID WHERE O.STORE_ID =? AND O.ORD_ID=?";
 	@Override
 	public void insert(OrderdetailVO orderdetailVO) {
 
@@ -267,7 +267,7 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 	}
 
 	@Override
-	public List<OrderdetailVO> getOrderdetail(String store_id) {
+	public List<OrderdetailVO> getOrderdetail(String store_id,String ord_id) {
 		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
 		OrderdetailVO orderdetailVO = null;
 		Connection con = null;
@@ -280,6 +280,190 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			pstmt = con.prepareStatement(GET_ALL_Orderdetail);
 			
 			pstmt.setString(1, store_id);
+			pstmt.setString(2, ord_id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				orderdetailVO = new OrderdetailVO();
+				orderdetailVO.setOrd_id(rs.getString("ord_id"));
+				orderdetailVO.setProd_id(rs.getString("prod_id"));
+				orderdetailVO.setProd_name(rs.getString("prod_name"));
+				orderdetailVO.setProd_price(rs.getInt("prod_price"));
+				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
+				orderdetailVO.setStore_id(rs.getString("store_id"));
+				list.add(orderdetailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_2(String store_id, String ord_id_2) {
+		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
+		OrderdetailVO orderdetailVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_Orderdetail);
+			
+			pstmt.setString(1, store_id);
+			pstmt.setString(2, ord_id_2);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				orderdetailVO = new OrderdetailVO();
+				orderdetailVO.setOrd_id(rs.getString("ord_id"));
+				orderdetailVO.setProd_id(rs.getString("prod_id"));
+				orderdetailVO.setProd_name(rs.getString("prod_name"));
+				orderdetailVO.setProd_price(rs.getInt("prod_price"));
+				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
+				orderdetailVO.setStore_id(rs.getString("store_id"));
+				list.add(orderdetailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_3(String store_id, String ord_id_3) {
+		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
+		OrderdetailVO orderdetailVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_Orderdetail);
+			
+			pstmt.setString(1, store_id);
+			pstmt.setString(2, ord_id_3);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				orderdetailVO = new OrderdetailVO();
+				orderdetailVO.setOrd_id(rs.getString("ord_id"));
+				orderdetailVO.setProd_id(rs.getString("prod_id"));
+				orderdetailVO.setProd_name(rs.getString("prod_name"));
+				orderdetailVO.setProd_price(rs.getInt("prod_price"));
+				orderdetailVO.setDetail_amt(rs.getInt("detail_amt"));
+				orderdetailVO.setStore_id(rs.getString("store_id"));
+				list.add(orderdetailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OrderdetailVO> getOrderdetail_4(String store_id, String ord_id_4) {
+		List<OrderdetailVO> list = new ArrayList<OrderdetailVO>();
+		OrderdetailVO orderdetailVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_Orderdetail);
+			
+			pstmt.setString(1, store_id);
+			pstmt.setString(2, ord_id_4);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
