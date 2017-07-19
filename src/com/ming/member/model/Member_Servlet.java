@@ -50,7 +50,7 @@ public class Member_Servlet extends HttpServlet{
 		if (action.equals("getAll")) {
 			List<MemberVO> newsList = newsDao.getAll();
 			writeText(response, gson.toJson(newsList));
-		}
+		}else
 		if(action.equals("findByMem")){
 			String mem_acct = jsonObject.get("mem_acct").getAsString();
 			String mem_pwd = jsonObject.get("mem_pwd").getAsString();
@@ -64,6 +64,20 @@ public class Member_Servlet extends HttpServlet{
 			}
 		}else{
 			writeText(response,"");
+		}
+		if(action.equals("getMem_Insert")) {
+			String inser_memid = jsonObject.get("inser_memid").getAsString();
+			String inser_mem_psw = jsonObject.get("inser_mem_psw").getAsString();
+			String inser_mem_name = jsonObject.get("inser_mem_name").getAsString();
+			String inser_mem_nanber = jsonObject.get("inser_mem_nanber").getAsString();
+			String inser_mem_mail = jsonObject.get("inser_mem_mail").getAsString();
+			String mem_add = null;
+			Integer mem_points = 0;
+			byte[] mem_img = null;
+			
+			newsDao.getMem_Insert(inser_memid,inser_mem_psw,inser_mem_name,inser_mem_nanber,inser_mem_mail,mem_add,mem_points,mem_img);
+			writeText(response, gson.toJson(newsDao));
+
 		}
 	}
 
