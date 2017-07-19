@@ -22,7 +22,7 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	private static final String DELETE_SPNDCOFFEERCDs = "DELETE FROM SPNDCOFFEERCD WHERE LIST_ID = ?";
 	private static final String DELETE_SPNDCOFFEELIST = "DELETE FROM SPNDCOFFEELIST WHERE LIST_ID = ?";
 	private static final String UPDATE = "UPDATE SPNDCOFFEELIST SET SPND_ID=?, MEM_ID=?, SPND_PROD=?, STORE_ID=?, LIST_AMT=?, LIST_LEFT=?, LIST_DATE=? WHERE LIST_ID = ?";
-	private static final String GETMYSPNDCOFFEELIST ="SELECT P.LIST_ID,P.LIST_LEFT,S.STORE_NAME,S.STORE_ADD FROM SPNDCOFFEELIST P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.MEM_ID = ?";
+	private static final String GETMYSPNDCOFFEELIST ="SELECT S.STORE_ID,P.LIST_AMT,P.LIST_ID,P.LIST_LEFT,S.STORE_NAME,S.STORE_ADD FROM SPNDCOFFEELIST P JOIN STORE S ON P.STORE_ID = S.STORE_ID WHERE P.MEM_ID = ?";
 	
 	
 	@Override
@@ -455,6 +455,8 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 				spndcoffeelistVO.setStore_name(rs.getString("store_name"));
 				spndcoffeelistVO.setStore_add(rs.getString("store_add"));
 				spndcoffeelistVO.setList_id(rs.getString("list_id"));
+				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
+				spndcoffeelistVO.setStore_id(rs.getString("store_id"));
 				list.add(spndcoffeelistVO); // Store the row in the list
 			}
 

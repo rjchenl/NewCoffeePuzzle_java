@@ -2,6 +2,7 @@ package com.rjchenl.member.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.rjchen.store.model.StoreDAO_interface;
 import com.rjchen.store.model.StoreJDBCDAO;
 import com.rjchen.store.model.StoreVO;
+import com.rjehcnl.server.main.ImageUtil;
 
 
 //MemberDAO_interface memberdao_interface
@@ -67,25 +69,23 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 		}
 		
 		//以下是取圖片
-//		else if(action.equals("getImage")){
-//			
-//		System.out.println("action(step3): " + action);
-//		
-//			StoreJDBCDAO storedao = new StoreJDBCDAO();
-//			OutputStream os = response.getOutputStream();
-//			
-//			String activ_id = jsonObject.get("activ_id").getAsString();
-//			int imageSize = jsonObject.get("imageSize").getAsInt();
-//			byte[] image = actdao.getImage(activ_id);
-//			if (image != null) {
-//				image = ImageUtil.shrink(image, imageSize);
-//				response.setContentType("image/jpeg");
-//				response.setContentLength(image.length);
-//			}
-//			os.write(image);
-//		}
-//		
-//	System.out.println("doPost ended");
+		else if(action.equals("getImage")){
+			
+
+		
+			MemberJDBCDAO memberdao = new MemberJDBCDAO();
+			OutputStream os = response.getOutputStream();
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			byte[] image = memberdao.getImage(mem_id);
+			if (image != null) {
+				image = ImageUtil.shrink(image, imageSize);
+				response.setContentType("image/jpeg");
+				response.setContentLength(image.length);
+			}
+			os.write(image);
+		}
 	
 	}
 

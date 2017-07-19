@@ -60,6 +60,12 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 			List<Fav_storeVO> fav_storeList = fav_storeDAO.getAll();
 			writeText(response, gson.toJson(fav_storeList));
 		
+		}else if(action.equals("getStoreInfoById")){
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			
+			List<Fav_storeVO> fav_storeList = fav_storeDAO.getMY_fav_store(mem_id);
+			writeText(response, gson.toJson(fav_storeList));
 		}
 		
 		//以下是取圖片
@@ -78,6 +84,51 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 				response.setContentLength(image.length);
 			}
 			os.write(image);
+		}else if(action.equals("isThisCombinationExist")){
+			
+			System.out.println("jsonObject :"+jsonObject);
+			
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			String store_id = jsonObject.get("store_id").getAsString();
+
+			
+			
+			Fav_storeVO fav_storeVOO = fav_storeDAO.findByPrimaryKey(mem_id, store_id);
+			
+			//如果有查到值
+			if(fav_storeVOO != null){
+				
+				writeText(response,"true");
+				
+			}else{
+			//如果沒有查到值
+				
+				writeText(response,"false");
+				
+			}
+			
+			
+		}else if(action.equals("deleteCombination")){
+			
+			String mem_id = jsonObject.get("mem_id").getAsString();
+			String store_id = jsonObject.get("store_id").getAsString();
+			
+
+			
+			fav_storeDAO.delete(mem_id, store_id);
+			
+			
+		}else if(action.equals("insertCombination")){
+
+			
+			
+			String fav_storevo = jsonObject.get("fav_storevo").getAsString();
+			Fav_storeVO fav_storeVO = gson.fromJson(fav_storevo, Fav_storeVO.class);
+	
+
+			
+			fav_storeDAO.insert(fav_storeVO);
 		}
 		
 	
@@ -102,6 +153,7 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 				String combination_fromservlet = vo.getMem_id()+vo.getStore_id();
 				if(combination_fromapp.equals(combination_fromservlet)){					
 					isExist = true;	
+					writeText(response, String.valueOf(isExist));
 					System.out.println("已加過此店家");
 				}
 			}
@@ -109,6 +161,7 @@ private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 			if(!isExist){
 				//新增收藏店家
 				fav_storeDAO.insert(fav_storeVO);
+				writeText(response, String.valueOf(isExist));
 				System.out.println("未加過此店家");
 			}
 			

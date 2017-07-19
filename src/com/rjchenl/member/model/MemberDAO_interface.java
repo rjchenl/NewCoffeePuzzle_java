@@ -35,5 +35,6 @@ public interface MemberDAO_interface {
 	public Set<Fav_storeVO> getFav_storesByMem_id(String mem_id);
 	public Set<Photo_storeVO> getPhoto_storesByMem_id(String mem_id);
 	public Set<Rept_storeVO> getRept_storesByMem_id(String mem_id);
+	public byte[] getImage(String mem_id);
 
 }

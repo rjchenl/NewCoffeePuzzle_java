@@ -24,6 +24,7 @@ import com.rept_store.model.Rept_storeVO;
 import com.rjchenl.fav_store.model.Fav_storeVO;
 import com.rjchenl.orderlist.model.OrderlistVO;
 import com.rjchenl.spndcoffeelist.model.SpndcoffeelistVO;
+import com.rjehcnl.server.main.Common;
 
 public class MemberJDBCDAO implements MemberDAO_interface {
 
@@ -1380,6 +1381,44 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		}
 
 */
+	}
+
+	@Override
+	public byte[] getImage(String mem_id) {
+		String sql = "SELECT mem_img FROM member WHERE mem_id = ?";
+		Connection connection = null;
+		PreparedStatement ps = null;
+		byte[] image = null;
+		try {
+			connection = DriverManager.getConnection(Common.URL, Common.USER,
+					Common.PASSWORD);
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, mem_id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				
+				image = rs.getBytes(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) {
+					// When a Statement object is closed,
+					// its current ResultSet object is also closed
+					ps.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+			
+		
+			}
+		return image;
 	}
 
 

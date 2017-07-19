@@ -217,10 +217,20 @@ public class Fav_storeJNDIDAO implements Fav_storeDAO_interface {
 		return null;
 	}
 
+
+
+
+
 	@Override
-	public List<Fav_storeVO> getMyfavoriateStoreByMemId() {
+	public List<Fav_storeVO> getMY_fav_store(String mem_id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean isThisCombinationExist(String mem_id, String store_id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

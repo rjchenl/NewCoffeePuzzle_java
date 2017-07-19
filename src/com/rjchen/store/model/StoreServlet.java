@@ -56,32 +56,28 @@ public class StoreServlet extends HttpServlet {
 			List<StoreVO> storeList = storeDAO.getAll();
 			writeText(response, gson.toJson(storeList));
 		
+		}else if(action.equals("getThisStore")){
+			
+			String store_id = jsonObject.get("store_id").getAsString();
+			StoreVO storevo = storeDAO.findByPrimaryKey(store_id);
+			writeText(response, gson.toJson(storevo));
 		}
 		
 		//以下是取圖片
 		else if(action.equals("getImage")){
 			
-		System.out.println("enter get image");
 			StoreJDBCDAO storedao = new StoreJDBCDAO();
 			OutputStream os = response.getOutputStream();
-		System.out.println("step1");
-		System.out.println("jsonObject "+jsonObject);
 			String store_id = jsonObject.get("store_id").getAsString();
-		System.out.println("step2");
-		System.out.println("store_id after step2 : "+store_id);
 			int imageSize = jsonObject.get("imageSize").getAsInt();
-		System.out.println("imageSize : " +imageSize);
 		
 			byte[] image = storedao.getImage(store_id);
-			System.out.println("image byte : "+image);
 			if (image != null) {
-			System.out.println("image is not null");
 				image = ImageUtil.shrink(image, imageSize);
 				response.setContentType("image/jpeg");
 				response.setContentLength(image.length);
 			}
 			os.write(image);
-			System.out.println("step3");
 		}
 		
 	
