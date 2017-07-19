@@ -1100,5 +1100,11 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 		}
 	}
 
+	@Override
+	public byte[] getImage(String mem_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.rjchen.store.model.StoreJDBCDAO;
@@ -45,14 +46,15 @@ public class OrderlistServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-		Gson gson = new Gson();
+//		Gson gson = new Gson();
+		Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		BufferedReader br = request.getReader();
 		StringBuilder jsonIn = new StringBuilder();
 		String line = null;
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
-		System.out.println("jsonin0711"+jsonIn.toString());
+		System.out.println("jsonin : "+jsonIn.toString());
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
 				JsonObject.class);
 		OrderlistDAO_interface orderlistdao = new OrderlistJDBCDAO();
@@ -98,14 +100,17 @@ public class OrderlistServlet extends HttpServlet{
 		
 		if(action.equals("orderListInsert")){
 			
-			System.out.println("0716_step1");
+
+			System.out.println("start orderListInsert");
 			String OrderListVO = jsonObject.get("OrderListVO").getAsString();
-			System.out.println(OrderListVO);
-			System.out.println("0716_step1-2");
-		OrderlistVO orderlistVO = gson.fromJson(OrderListVO, OrderlistVO.class);
-			System.out.println("0716_step2");
+			System.out.println("OrderListVO :"+OrderListVO);
+			OrderlistVO orderlistVO = gson.fromJson(OrderListVO, OrderlistVO.class);
+			System.out.println("step2");
 
 			String OrderdtailVOList = jsonObject.get("OrderdtailVOList").getAsString();
+
+			
+			System.out.println("OrderdtailVOList : "+OrderdtailVOList);
 		
 
 			Type listType = new TypeToken<ArrayList<OrderdetailVO>>(){}.getType();

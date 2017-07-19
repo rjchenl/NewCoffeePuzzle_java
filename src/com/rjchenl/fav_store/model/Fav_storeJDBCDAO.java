@@ -19,7 +19,9 @@ public class Fav_storeJDBCDAO implements Fav_storeDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT MEM_ID,STORE_ID FROM FAV_STORE WHERE MEM_ID = ? AND STORE_ID = ?";
 	private static final String DELETE_FAV_STORE = "DELETE FROM FAV_STORE WHERE MEM_ID = ? AND STORE_ID = ?";
 	private static final String GET_COMBINATION_STRING = "select mem_id,store_id from fav_store";
-
+	private static final String GET_MY_FAVORIATE_STORE = "SELECT S.STORE_ID,S.STORE_NAME,S.STORE_ADD FROM STORE S JOIN FAV_STORE F ON S.STORE_ID = F.STORE_ID WHERE F.MEM_ID = ?";
+	private static final String IS_THIS_COMBINATION_EXIST = "SELECT STORE_ID FROM FAV_STORE WHERE MEM_ID = ? AND STORE_ID = ?";
+	
 	@Override
 	public void insert(Fav_storeVO fav_storeVO) {
 
@@ -355,27 +357,40 @@ public class Fav_storeJDBCDAO implements Fav_storeDAO_interface {
 		return image;
 	}
 
+
+
 	@Override
-	public List<Fav_storeVO> getMyfavoriateStoreByMemId() {
+	public List<Fav_storeVO> getMY_fav_store(String mem_id) {
+		
 		List<Fav_storeVO> list = new ArrayList<Fav_storeVO>();
 		Fav_storeVO fav_storeVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		//to do here
 
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_ALL_STMT);
-
+			pstmt = con.prepareStatement(GET_MY_FAVORIATE_STORE);
+			
+			
+			pstmt.setString(1,mem_id);
+			
+			
 			rs = pstmt.executeQuery();
+			
+			
+			
+			
+			
 
 			while (rs.next()) {
 				fav_storeVO = new Fav_storeVO();
-				fav_storeVO.setMem_id(rs.getString("mem_id"));
+//				fav_storeVO.setMem_id(rs.getString("mem_id"));
 				fav_storeVO.setStore_id(rs.getString("store_id"));
+				fav_storeVO.setStore_name(rs.getString("store_name"));
+				fav_storeVO.setStore_add(rs.getString("store_add"));
 				list.add(fav_storeVO); // Store the row in the list
 			}
 
@@ -410,6 +425,15 @@ public class Fav_storeJDBCDAO implements Fav_storeDAO_interface {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public boolean isThisCombinationExist(String mem_id, String store_id) {
+		
+		
+		
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

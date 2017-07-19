@@ -227,26 +227,20 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 	
 	@Override
 	public byte[] getImage(String store_id) {
-		System.out.println("getImage store_id : "+store_id);
 		String sql = "SELECT store_img FROM store WHERE store_id = ?";
 		Connection connection = null;
 		PreparedStatement ps = null;
 		byte[] image = null;
 		try {
-		System.out.println("step1");
 			connection = DriverManager.getConnection(Common.URL, Common.USER,
 					Common.PASSWORD);
 			ps = connection.prepareStatement(sql);
-		System.out.println("step2");
 			ps.setString(1, store_id);
-		System.out.println("step3");
 			ResultSet rs = ps.executeQuery();
-		System.out.println("step4");
 
 			if (rs.next()) {
 				
 				image = rs.getBytes(1);
-				System.out.println("step5");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -265,7 +259,7 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 			}	
 			
 		
-			System.out.println("step6");}
+			}
 		return image;
 	}
 
