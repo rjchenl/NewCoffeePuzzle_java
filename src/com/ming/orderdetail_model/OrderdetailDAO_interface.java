@@ -13,5 +13,6 @@ public interface OrderdetailDAO_interface {
 	public List<OrderdetailVO> getOrderdetail_2(String store_id, String ord_id_2);
 	public List<OrderdetailVO> getOrderdetail_3(String store_id, String ord_id_3);
 	public List<OrderdetailVO> getOrderdetail_4(String store_id, String ord_id_4);
+	public OrderdetailVO getDelivery_ALL(String store_id, String ord_id);
 
 }

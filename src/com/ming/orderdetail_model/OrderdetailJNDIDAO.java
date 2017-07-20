@@ -279,5 +279,11 @@ public class OrderdetailJNDIDAO implements OrderdetailDAO_interface {
 		return null;
 	}
 
+	@Override
+	public OrderdetailVO getDelivery_ALL(String store_id, String ord_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
