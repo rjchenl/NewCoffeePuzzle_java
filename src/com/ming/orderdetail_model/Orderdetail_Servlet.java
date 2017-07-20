@@ -70,9 +70,8 @@ public class Orderdetail_Servlet extends HttpServlet {
 			writeText(response, gson.toJson(newsList));
 		}
 		if (action.equals("getDelivery_ALL")) {
-			String store_id = jsonObject.get("store_id").getAsString();
 			String ord_id = jsonObject.get("ord_id").getAsString();
-			OrderdetailVO newsList = newsDao.getDelivery_ALL(store_id,ord_id);
+			OrderdetailVO newsList = newsDao.getDelivery_ALL(ord_id);
 			writeText(response, gson.toJson(newsList));
 		}
 	}

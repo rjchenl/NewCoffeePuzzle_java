@@ -78,6 +78,7 @@ public class Spndcoffelist_Servlet extends HttpServlet {
 			newsDao.getInsert(store_id,mem_id,spnd_id,spnd_prod,list_amt,list_left,list_date);
 			writeText(response, gson.toJson(newsDao));
 		}
+
 	}
 
 	private void writeText(HttpServletResponse response, String outText)

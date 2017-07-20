@@ -1,3 +1,4 @@
+
 package com.ming.spndcoffeelist.model;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	// JDBC
 	private static final String Get_Update = "UPDATE SPNDCOFFEELIST SET LIST_LEFT=? WHERE LIST_ID =? AND STORE_ID=?";
 	private static final String Get_INSERT = "INSERT INTO SPNDCOFFEELIST (LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE) VALUES ('LIST' || LPAD(to_char(LIST_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?)";
+
 	@Override
 	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
 
@@ -510,6 +512,7 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 
 */
 	}
+
 
 
 }
