@@ -25,7 +25,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 	private static final String DELETE_ORDERDETAILs = "DELETE FROM ORDERDETAIL WHERE ORD_ID = ?";
 	private static final String DELETE_ORDERLIST = "DELETE FROM ORDERLIST WHERE ORD_ID = ?";
 	private static final String UPDATE = "UPDATE ORDERLIST SET MEM_ID=?, STORE_ID=?, ORD_TOTAL=?, ORD_PICK=?, ORD_ADD=?, ORD_SHIPPING=?, ORD_TIME=?, SCORE_SELLER=? WHERE ORD_ID = ?";
-	private static final String GETMYORDERLIST = "SELECT O.ORD_ID,S.STORE_NAME,O.ORD_PICK,O.ORD_SHIPPING,O.ORD_TIME,O.ORD_TOTAL FROM ORDERLIST O JOIN STORE S ON O.STORE_ID = S.STORE_ID WHERE O.MEM_ID=? ORDER BY O.ORD_ID";
+	private static final String GETMYORDERLIST = "SELECT O.ORD_ADD,O.ORD_ID,S.STORE_NAME,O.ORD_PICK,O.ORD_SHIPPING,O.ORD_TIME,O.ORD_TOTAL FROM ORDERLIST O JOIN STORE S ON O.STORE_ID = S.STORE_ID WHERE O.MEM_ID=? ORDER BY O.ORD_ID";
 	
 	
 	
@@ -576,6 +576,7 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 				orderlistVO.setOrd_shipping(rs.getInt("ord_shipping"));
 				orderlistVO.setOrd_time(rs.getTimestamp("ord_time"));
 				orderlistVO.setOrd_total(rs.getInt("ord_total"));
+				orderlistVO.setOrd_add(rs.getString("ord_add"));
 				System.out.println("getMyOrderList step5");
 				list.add(orderlistVO); // Store the row in the list
 			}

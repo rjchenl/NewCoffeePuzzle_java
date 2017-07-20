@@ -1,3 +1,4 @@
+
 package com.ming.spndcoffeelist.model;
 
 import java.util.ArrayList;
@@ -511,6 +512,7 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 
 */
 	}
+
 
 
 }
