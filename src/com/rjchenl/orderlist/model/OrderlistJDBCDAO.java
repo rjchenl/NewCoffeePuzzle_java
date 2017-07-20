@@ -459,17 +459,14 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		System.out.println("0716_insertwith step1");
 
 		try {
-			System.out.println("0716_insertwith step2");
 			
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			
 			// 1●設定於 pstm.executeUpdate()之前
     		con.setAutoCommit(false);
-    		System.out.println("0716_insertwith step3");
 			
     		// 先新增部門
 			String cols[] = {"ORD_ID"};
@@ -482,18 +479,14 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 			pstmt.setInt(6, orerlistvo.getOrd_shipping());
 			pstmt.setTimestamp(7, orerlistvo.getOrd_time());
 			pstmt.setInt(8, orerlistvo.getScore_seller());
-			System.out.println("0716_insertwith step4");
 			
 		
 			
 			pstmt.executeUpdate();
-			System.out.println("0716_insertwith step5");
 			//掘取對應的自增主鍵值
 			String next_orderlist = null;
 			ResultSet rs = pstmt.getGeneratedKeys();
-			System.out.println("0716_insertwith step6");
 			if (rs.next()) {
-				System.out.println("0716_insertwith step7");
 				next_orderlist = rs.getString(1);
 				System.out.println("自增主鍵值= " + next_orderlist +"(剛新增成功的部門編號)");
 			} else {
@@ -503,16 +496,11 @@ public class OrderlistJDBCDAO implements OrderlistDAO_interface {
 			// 再同時新增員工
 			OrderdetailJDBCDAO dao = new OrderdetailJDBCDAO();
 			System.out.println("list.size()-A="+list.size());
-			System.out.println("0716_insertwith step8");
 			
 			for (OrderdetailVO orderdetailVO : list) {
-				System.out.println("0716_insertwith step9");
 				orderdetailVO.setOrd_id(next_orderlist.toString());
-				System.out.println("0716_insertwith step10");
 				dao.insert2(orderdetailVO,con);
-				System.out.println("0716_insertwith step11");
 			}
-			System.out.println("0716_insertwith step12");
 
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();

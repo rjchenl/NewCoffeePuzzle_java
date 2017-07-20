@@ -320,10 +320,8 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 		
 		
 		PreparedStatement pstmt = null;
-		System.out.println("0711_insert step1");
 		
 		try {
-			System.out.println("0711_insert step2");
 		
 			pstmt = con.prepareStatement(INSERT_STMT);
 			pstmt.setString(1,orderdetailVO.getOrd_id());
@@ -332,10 +330,8 @@ public class OrderdetailJDBCDAO implements OrderdetailDAO_interface {
 			pstmt.setInt(4,orderdetailVO.getProd_price());
 			pstmt.setInt(5,orderdetailVO.getDetail_amt());
 			
-			System.out.println("0711_insert step3");
 			
 			pstmt.executeUpdate();
-			System.out.println("0711_insert step4");
 			
 			
 			

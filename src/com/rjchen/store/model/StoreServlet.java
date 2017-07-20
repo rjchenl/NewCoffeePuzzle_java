@@ -76,8 +76,9 @@ public class StoreServlet extends HttpServlet {
 				image = ImageUtil.shrink(image, imageSize);
 				response.setContentType("image/jpeg");
 				response.setContentLength(image.length);
+				os.write(image);
 			}
-			os.write(image);
+			
 		}
 		
 	
