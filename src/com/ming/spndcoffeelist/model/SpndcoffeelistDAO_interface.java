@@ -14,5 +14,4 @@ public interface SpndcoffeelistDAO_interface {
 	public List<SpndcoffeelistVO> getUpdate(String store_id,String list_id,Integer list_left);
 	public void getInsert(String store_id, String mem_id, String spnd_id, String spnd_prod, Integer list_amt,
 			Integer list_left, Timestamp list_date);
-	public SpndcoffeelistVO getDelivery_UpdateALL(String store_id, String list_id);
 }

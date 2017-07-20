@@ -21,7 +21,6 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 	// JDBC
 	private static final String Get_Update = "UPDATE SPNDCOFFEELIST SET LIST_LEFT=? WHERE LIST_ID =? AND STORE_ID=?";
 	private static final String Get_INSERT = "INSERT INTO SPNDCOFFEELIST (LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE) VALUES ('LIST' || LPAD(to_char(LIST_ID_SQ.NEXTVAL), 8, '0'), ?, ?, ?, ?, ?, ?, ?)";
-	private static final String getDelivery_UpdateALL = "SELECT LIST_ID,SPND_ID,MEM_ID,SPND_PROD,STORE_ID,LIST_AMT,LIST_LEFT,LIST_DATE FROM SPNDCOFFEELIST WHERE STORE_ID = ? AND LIST_ID = ?";
 
 	@Override
 	public void insert(SpndcoffeelistVO spndcoffeelistVO) {
@@ -230,67 +229,6 @@ public class SpndcoffeelistJDBCDAO implements SpndcoffeelistDAO_interface {
 				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
 				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
 				spndcoffeelistVO.setList_date(rs.getTimestamp("list_date"));
-			}
-
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "+ e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return spndcoffeelistVO;
-	}
-
-	@Override
-	public SpndcoffeelistVO getDelivery_UpdateALL(String store_id, String list_id) {
-		SpndcoffeelistVO spndcoffeelistVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(getDelivery_UpdateALL);
-
-			pstmt.setString(1, store_id);
-			pstmt.setString(2, list_id);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				spndcoffeelistVO = new SpndcoffeelistVO();
-				spndcoffeelistVO.setList_id(rs.getString("list_id"));
-				spndcoffeelistVO.setSpnd_id(rs.getString("spnd_id"));
-				spndcoffeelistVO.setMem_id(rs.getString("mem_id"));
-				spndcoffeelistVO.setSpnd_prod(rs.getString("spnd_prod"));
-				spndcoffeelistVO.setStore_id(rs.getString("store_id"));
-				spndcoffeelistVO.setList_amt(rs.getInt("list_amt"));
-				spndcoffeelistVO.setList_left(rs.getInt("list_left"));
 			}
 
 			// Handle any driver errors
