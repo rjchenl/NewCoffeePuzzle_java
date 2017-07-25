@@ -75,7 +75,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 
 	@Override
 	public void getMem_Insert(String inser_memid, String inser_mem_psw, String inser_mem_name, String inser_mem_nanber,
-			String inser_mem_mail, String mem_add, Integer mem_points, byte[] mem_img) {
+			String inser_mem_mail, String inser_mem_add, Integer mem_points, byte[] mem_img) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -89,7 +89,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			pstmt.setString(3, inser_mem_name);
 			pstmt.setString(4, inser_mem_nanber);
 			pstmt.setString(5, inser_mem_mail);
-			pstmt.setString(6, mem_add);
+			pstmt.setString(6, inser_mem_add);
 			pstmt.setInt(7, mem_points);
 			pstmt.setBytes(8, mem_img);
 

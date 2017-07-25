@@ -71,11 +71,11 @@ public class Member_Servlet extends HttpServlet{
 			String inser_mem_name = jsonObject.get("inser_mem_name").getAsString();
 			String inser_mem_nanber = jsonObject.get("inser_mem_nanber").getAsString();
 			String inser_mem_mail = jsonObject.get("inser_mem_mail").getAsString();
-			String mem_add = null;
+			String inser_mem_add = jsonObject.get("inser_mem_add").getAsString();
 			Integer mem_points = 0;
 			byte[] mem_img = null;
 			
-			newsDao.getMem_Insert(inser_memid,inser_mem_psw,inser_mem_name,inser_mem_nanber,inser_mem_mail,mem_add,mem_points,mem_img);
+			newsDao.getMem_Insert(inser_memid,inser_mem_psw,inser_mem_name,inser_mem_nanber,inser_mem_mail,inser_mem_add,mem_points,mem_img);
 			writeText(response, gson.toJson(newsDao));
 
 		}
